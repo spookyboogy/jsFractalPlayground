@@ -9,7 +9,7 @@ const pyramidContainer = document.getElementById('pyramidContainer');
 let startX = 300; // X-coordinate of the triangle's starting point
 let startY = 300; // Y-coordinate of the triangle's starting point
 const size = 200; // Length of the triangle's sides
-const iterations = 12; // Number of iterations to display
+const iterations = 9; // Number of iterations to display
 
 const strokeColors = [
   "#1C533D", "#3C8E64", "#94BF7F", "#C7DFA4", "#6E9454", "#006442",
@@ -34,7 +34,7 @@ async function drawFractal(x, y, size, iterations, colorIndex) {
     ctx.closePath();
 					// ctx.strokeStyle = '#ffffff'; // Set stroke color to white
 		ctx.strokeStyle = strokeColors[colorIndex % strokeColors.length];
-		ctx.lineWidth = 0.125; // 
+		ctx.lineWidth = 0.2; // 
     ctx.stroke();
   } else {
     // Recursive case: Generate three smaller triangles
@@ -42,21 +42,35 @@ async function drawFractal(x, y, size, iterations, colorIndex) {
 	}
 }
 
+// async function drawSecondFractal(x, y, size, iterations, colorIndex) {
+//   // Calculate the shifted coordinates
+//   const shiftedX = x + 20;
+//   const shiftedY = y + 20;
+// 
+//   // Draw the second fractal with the shifted coordinates
+//   await drawFractal(shiftedX, shiftedY, size, iterations, colorIndex);
+// }
+
+
 async function drawFractalStep(x, y, size, iterations, colorIndex) {
-    // await new Promise((resolve) => setTimeout(resolve, 0.001)); // ms
+
+    await new Promise((resolve) => setTimeout(resolve, 0.0001)); // ms
 				
-				await drawFractal(x, y, size / 2, 
-								iterations - 1, 
-								colorIndex + 1); //
-				await drawFractal(x + size / 2, y, size / 2, 
-								iterations - 1, 
-								colorIndex + 2); // 
-				await drawFractal(x + size / 4, y + (Math.sqrt(3) * size) / 4, size / 2, 
-								iterations - 1, 
-								colorIndex + 3); // 
+        await drawFractal(x, y, size / 2, 
+                        iterations - 1, 
+                        colorIndex + 1); //
+        await drawFractal(x + size / 2, y, size / 2, 
+                        iterations - 1, 
+                        colorIndex + 2); // 
+        await drawFractal(x + size / 4, y + (Math.sqrt(3) * size) / 4, size / 2, 
+                        iterations - 1, 
+                        colorIndex + 3); // 
 }
+
 async function updateCanvasSize() {
-      
+    
+    //   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     const containerWidth = canvas.parentNode.clientWidth;
     const containerHeight = canvas.parentNode.clientHeight;
     const canvasSize = Math.min(containerWidth, containerHeight);
@@ -70,6 +84,11 @@ async function updateCanvasSize() {
     const startY = canvas.height / 2 - triangleHeight / 2;
 
     await drawFractal(startX, startY, canvasSize, iterations, colorIndex);
+
+    // Draw the second fractal
+  const secondStartX = startX + 20;
+  const secondStartY = startY + 20;
+  await drawSecondFractal(secondStartX, secondStartY, size, iterations, 0);
 }
 
 function printPyramid(baseSize) {
