@@ -1,0 +1,5 @@
+# Ignore video file types
+*.mp4
+*.avi
+*.mov
+*.swp
