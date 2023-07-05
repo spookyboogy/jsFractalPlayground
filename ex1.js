@@ -1,6 +1,5 @@
-//
+// index1
 // llolearning javascript with fractals
-//
 
 import palettes from './colorPalettes.js';
 
@@ -12,25 +11,35 @@ const pyramidContainer = document.getElementById('pyramidContainer');
 let startX = 300; // X-coordinate of the triangle's starting point
 let startY = 300; // Y-coordinate of the triangle's starting point
 const size = 200; // Length of the triangle's sides
-const iterations = 9; // Number of iterations to display
+const iterations =9; // Number of iterations to display
 
-const { palette4 } = palettes; // Access palette4 directly
+// for each palette:
+//   draw fractal of increasing iteration level and proportionally decreasing 
+//     line width. each new iteration level being slightly shifted on the canvas (eg down,left)
+//   refresh canvas
+
+// setting combos, interesting math there (related to colorIndex % palette.length) 
+// palette5 , 8 iterations, 0.6 width
+// palette4, 7, .75
+// palette2, 8, .75
+// palette5, 11, .125
+
+// const { palette1 } = palettes; // Access palette4 directly
 const strokeColors = palettes.palette4; // Assign palette4 to strokeColors
 
 let colorIndex = 0;
 
 async function drawFractal(x, y, size, iterations, colorIndex) {
-  if (iterations === 0) {
+    if (iterations === 0) {
     // Base case: Stop recursion when iterations reach 0
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineTo(x + size, y);
-    ctx.lineTo(x + size / 2, y + (Math.sqrt(3) * size) / 2);
-    ctx.closePath();
-					// ctx.strokeStyle = '#ffffff'; // Set stroke color to white
-		ctx.strokeStyle = strokeColors[colorIndex % strokeColors.length];
-		ctx.lineWidth = 0.2; // 
-    ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + size, y);
+        ctx.lineTo(x + size / 2, y + (Math.sqrt(3) * size) / 2);
+        ctx.closePath();
+        ctx.strokeStyle = strokeColors[colorIndex % strokeColors.length];
+        ctx.lineWidth = .2; // 
+        ctx.stroke();
   } else {
     // Recursive case: Generate three smaller triangles
 		await drawFractalStep(x, y, size, iterations, colorIndex);
@@ -100,6 +109,26 @@ function printPyramid(baseSize) {
   }
 }
 
+
+/**
+ * iterLoop : Draw the fractal triangle with 'palette' color palette
+ *            and 
+ *
+ * @param {integer} iterations - The iterative depth of the fractal.
+ * @param {color palette container} palette - The second argument.
+ * 
+ */
+
+function iterLoop(iterations = 7, palette = colorStrokes, ) {
+    
+    
+
+
+}
+
+
+
+
 var msg = "hellooo?";
 console.log(msg);
 console.log("\nHell?\n");
@@ -108,4 +137,5 @@ printPyramid(9);
 
 updateCanvasSize(); // Initialize canvas size
 window.addEventListener('resize', updateCanvasSize); // Recenter canvas on window resize
+canvas.addEventListener('click', updateCanvasSize);
 

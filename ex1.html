@@ -1,39 +1,54 @@
-<!-- this is a comment -->
-<!-- a 
-<!-- comment -->
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <title>hellwoorld</title>
-  <!-- filter: invert(100%); -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fractal and Pyramid</title>
+
   <style>
+    body {
+      background-color: #1f1f1f;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+    }
+
+    #fractalCanvas {
+      /* background-color: #000000; */
+			width: 100%;
+			height: 100%;
+		}
+
     #titleContainer {
       text-align: center;
-      margin-bottom: 10px;
+      padding: 20px;
     }
-      body {
-    filter: invert(100%);
-	    background-color: black;
-	    color: white;
-	  }
-
-  /* Add more specific styles for text elements */
-  body * {
-    filter: invert(0%);
-    background-color: initial;
-    color: initial;
-  }
-
   </style>
 </head>
+
 <body>
   <div id="titleContainer">
-    <h1>hellwoorld</h1>
+    <h1>triangle</h1>
+		
+		<h2 id="subhead"></h2>
+
+			<script>
+				var s1 = " \u25B2 ";
+				var s2 = " \u25BC ";
+				var fullSubhead = s1 + "<br>" + s1.repeat(2) + "<br>" + s1.repeat(3);
+				var subheadElement = document.getElementById("subhead");
+				subheadElement.innerHTML = fullSubhead;
+			</script>
+
   </div>
-  <canvas id="fractalCanvas"></canvas>
-  <script src="ex1.js"></script>
+
+	<div id="canvasContainer">
+		<canvas id="fractalCanvas" width="600" height="600"></canvas>
+	</div>
+
+  <div id="pyramidContainer"></div>
+
+  <script type="module" src="ex1.js"></script>
 </body>
+
 </html>
-
-
