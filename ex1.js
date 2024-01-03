@@ -1,6 +1,7 @@
 // 
 // llolearning javascript with fractals
 
+
 import palettes from './colorPalettes.js';
 
 const canvas = document.getElementById('fractalCanvas');
@@ -11,7 +12,9 @@ const pyramidContainer = document.getElementById('pyramidContainer');
 let startX = 300; // X-coordinate of the triangle's starting point
 let startY = 300; // Y-coordinate of the triangle's starting point
 const size = 200; // Length of the triangle's sides
-const iterations = 8; // Number of iterations to display
+const iterations = 7; // Number of iterations to display
+const lineWidth = .70
+console.log(palettes)
 
 // for each palette:
 //   draw fractal of increasing iteration level and proportionally decreasing 
@@ -25,7 +28,7 @@ const iterations = 8; // Number of iterations to display
 // palette5, 11, .125
 
 // const { palette1 } = palettes; // Access palette4 directly
-const strokeColors = palettes.palette2; // Assigning palette to strokeColors
+const strokeColors = palettes.palette1 // Assigning palette to strokeColors
 
 let colorIndex = 0;
 
@@ -38,7 +41,7 @@ async function drawFractal(x, y, size, iterations, colorIndex) {
         ctx.lineTo(x + size / 2, y + (Math.sqrt(3) * size) / 2);
         ctx.closePath();
         ctx.strokeStyle = strokeColors[colorIndex % strokeColors.length];
-        ctx.lineWidth = .75; // 
+        ctx.lineWidth = lineWidth; // 
         ctx.stroke();
   } else {
     // Recursive case: Generate three smaller triangles
@@ -120,14 +123,9 @@ function printPyramid(baseSize) {
  */
 
 function iterLoop(iterations = 7, palette = colorStrokes, ) {
-    
-    
 
 
 }
-
-
-
 
 var msg = "hellooo?";
 console.log(msg);
@@ -138,4 +136,3 @@ printPyramid(9);
 updateCanvasSize(); // Initialize canvas size
 window.addEventListener('resize', updateCanvasSize); // Recenter canvas on window resize
 canvas.addEventListener('click', updateCanvasSize);
-
