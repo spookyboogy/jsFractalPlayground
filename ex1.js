@@ -127,7 +127,7 @@ function iterLoop(iterations = 7, palette = colorStrokes, ) {
 
 }
 
-var msg = "hellooo?";
+const msg = "hellooo?";
 console.log(msg);
 console.log("\nHell?\n");
 

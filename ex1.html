@@ -15,10 +15,10 @@
 		<h2 id="subhead"></h2>
 
 			<script>
-				var s1 = " \u25B2 ";
-				var s2 = " \u25BC ";
-				var fullSubhead = s1 + "<br>" + s1.repeat(2) + "<br>" + s1.repeat(3);
-				var subheadElement = document.getElementById("subhead");
+				const s1 = " \u25B2 ";
+        const baseSize = 4;
+        const fullSubhead = Array.from({ length: baseSize }, (_, index) => `${s1.repeat(index + 1)}`).join('<br>');
+				const subheadElement = document.getElementById("subhead");
 				subheadElement.innerHTML = fullSubhead;
 			</script>
 
