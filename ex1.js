@@ -13,7 +13,7 @@ let startY = 300; // Y-coordinate of the triangle's starting point
 const size = 200; // Length of the triangle's sides
 const iterations = 7; // Number of iterations to display
 const lineWidth = .70;
-const strokeColors = palettes.palette1; // Assigning palette to strokeColors
+const strokeColors = palettes.palette2; // Assigning palette to strokeColors
 let colorIndex = 0;
 
 // let config = {
