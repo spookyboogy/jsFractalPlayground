@@ -3,3 +3,8 @@
 *.avi
 *.mov
 *.swp
+
+secrets.txt
+
+_site
+.vscode
