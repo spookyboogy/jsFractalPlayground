@@ -7,6 +7,7 @@ DATE := $(shell /bin/date)
 
 # Define patterns to exclude from the copy operation
 EXCLUDE_PATTERNS := $(addprefix --exclude=, $(shell cat $(SOURCE_DIR)/.gitignore))
+EXCLUDE_PATTERNS += --exclude='ex1.html'
 
 site: $(TARGET_DIR)/index.html
 
@@ -15,6 +16,7 @@ $(TARGET_DIR)/index.html: $(SOURCE_DIR)/ex1.html
 	# sed -e "s/__LAST_UPDATED__/$(DATE)/" $< > $@
 	# not using date replacement for now
 	rsync -av --delete $(EXCLUDE_PATTERNS) $(SOURCE_DIR)/ $(TARGET_DIR)/
+	cp $< $@
 
 clean:
 	rm -rf $(TARGET_DIR)
