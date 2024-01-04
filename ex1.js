@@ -11,8 +11,8 @@ const ctx = canvas.getContext('2d');
 let startX = 300; // X-coordinate of the triangle's starting point
 let startY = 300; // Y-coordinate of the triangle's starting point
 const size = 200; // Length of the triangle's sides
-const iterations = 10; // Number of iterations to display
-const lineWidth = .50;
+const iterations = 9; // Number of iterations to display
+const lineWidth = .55;
 const strokeColors = palettes.palette1; // Assigning palette to strokeColors
 let colorIndex = 0;
 
