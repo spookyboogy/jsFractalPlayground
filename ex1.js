@@ -11,8 +11,8 @@ const ctx = canvas.getContext('2d');
 let startX = 300; // X-coordinate of the triangle's starting point
 let startY = 300; // Y-coordinate of the triangle's starting point
 const size = 200; // Length of the triangle's sides
-const iterations = 9; // Number of iterations to display
-const lineWidth = .55;
+let iterations = 8; // Number of iterations to display
+const lineWidth = .625;
 const strokeColors = palettes.palette1; // Assigning palette to strokeColors
 let colorIndex = 0;
 
@@ -38,7 +38,7 @@ async function drawFractal(x, y, size, iterations, colorIndex) {
         ctx.lineTo(x + size, y);
         ctx.lineTo(x + size / 2, y + (Math.sqrt(3) * size) / 2);
         ctx.closePath();
-        ctx.strokeStyle = strokeColors[colorIndex % strokeColors.length];
+        ctx.strokeStyle = strokeColors[colorIndex % strokeColors.length]; 
         ctx.lineWidth = lineWidth; // 
         ctx.stroke();
   } else {
@@ -65,30 +65,25 @@ async function drawFractalStep(x, y, size, iterations, colorIndex) {
 async function updateCanvasSize() {
     
     //   ctx.clearRect(0, 0, canvas.width, canvas.height); // clears canvas
-
     const containerWidth = canvas.parentNode.clientWidth;
     const containerHeight = canvas.parentNode.clientHeight;
     const canvasSize = Math.min(containerWidth, containerHeight);
   
     canvas.width = canvasSize;
     canvas.height = canvasSize;
-
     const triangleHeight = (Math.sqrt(3) * canvasSize) / 2;
-
     const startX = canvas.width / 2 - canvasSize / 2;
     const startY = canvas.height / 2 - triangleHeight / 2;
 
-    await drawFractalRange(startX, startY, canvasSize, 1, 7, colorIndex);
+    await drawFractalRange(startX, startY, canvasSize, 1, iterations, colorIndex);
     // await drawFractal(startX, startY, canvasSize, iterations, colorIndex);
-
 }
-
 
 async function drawFractalRange(x, y, size, startIterations, endIterations, colorIndex) {
   for (let iterations = startIterations; iterations <= endIterations; iterations++) {
       await drawFractal(x, y, size, iterations, colorIndex);
       // introduce a delay between iterations for visualization purposes
-      await new Promise(resolve => setTimeout(resolve, 200)); // milliseconds
+      await new Promise(resolve => setTimeout(resolve, 100)); // milliseconds
       // set the wait time as a function of the iteration level such that
       // low level iterations have a bigger pause, so that it looks less hurried at the start
   }
@@ -124,10 +119,27 @@ console.log("\nHell?\n");
 printPyramid(9);
 
 // todo:
-  // for each palette (probably clearing canvas on new palette):
-  //   draw fractal of increasing iteration level and proportionally decreasing 
-  //   line width. each new iteration level being slightly shifted on the canvas (eg down,left)
-  //   refresh canvas
+  // - add a mechanism for switching modes/configurations
+      // 
+      // 
+      //   
+  // implement a mode where:
+      // for each palette (probably clearing canvas on new palette):
+      //   draw fractal of increasing iteration level and proportionally decreasing 
+      //   line width. each new iteration level being slightly shifted on the canvas (eg down,left)
+      //   refresh canvas
 
+// [x] set up github actions to make pushing updates / deploying to neocities from local repo ez
 
-// set up github actions to make pushing updates / deploying to neocities from local repo ez
+// features: 
+// - add (hideable) menu containing sliders for custom configs (iteration level, line width, etc)
+// - 
+
+// issues:
+// - depending on window size / resolution / platform, given a range of iterations to be drawn, 
+//   the actual amount of iterations drawn on-screen might not be the full iteration level intended.
+//   This is not so much a problem when drawing only a single fractal, rather than a range of them.
+//   It's actually much clearer / less muddied than drawing a whole range on top of itself (starting from 0).
+//   Other ideas would be to selectively draw certain iteration levels in the range, maybe skipping indices
+//   by 2nd or 3rds (or maybe depending on the palette being used) would produce a richer/faster animation
+//   when drawing ranges.
