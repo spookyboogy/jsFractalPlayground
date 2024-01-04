@@ -12,7 +12,7 @@ let startX = 300; // X-coordinate of the triangle's starting point
 let startY = 300; // Y-coordinate of the triangle's starting point
 const size = 200; // Length of the triangle's sides
 const iterations = 7; // Number of iterations to display
-const lineWidth = .50;
+const lineWidth = .70;
 const strokeColors = palettes.palette1; // Assigning palette to strokeColors
 let colorIndex = 0;
 
@@ -23,12 +23,12 @@ let colorIndex = 0;
 //   // ...
 // };
 
-// note on setting combos, interesting math there (related to colorIndex % palette.length) 
+// note on setting combos : interesting math related to colorIndex % palette.length 
 // palette5 , 8 iterations, 0.6 width
 // palette4, 7, .75
 // palette2, 8, .75
 // palette5, 11, .125
-// const { palette1 } = palettes; // js note : Accesses palette4 directly using 'destructuring'
+// js note : Accesses palette4 directly using 'destructuring' : const { palette1 } = palettes; // 
 
 async function drawFractal(x, y, size, iterations, colorIndex) {
     if (iterations === 0) {
@@ -78,8 +78,8 @@ async function updateCanvasSize() {
     const startX = canvas.width / 2 - canvasSize / 2;
     const startY = canvas.height / 2 - triangleHeight / 2;
 
-    // await drawFractalRange(startX, startY, canvasSize, 1, 7, colorIndex);
-    await drawFractal(startX, startY, canvasSize, iterations, colorIndex);
+    await drawFractalRange(startX, startY, canvasSize, 1, 7, colorIndex);
+    // await drawFractal(startX, startY, canvasSize, iterations, colorIndex);
 
     // // Draw the second fractal
     // const secondStartX = startX + 20;
@@ -100,10 +100,11 @@ async function drawFractalRange(x, y, size, startIterations, endIterations, colo
   for (let iterations = startIterations; iterations <= endIterations; iterations++) {
       await drawFractal(x, y, size, iterations, colorIndex);
       // introduce a delay between iterations for visualization purposes
-      await new Promise(resolve => setTimeout(resolve, 300)); // milliseconds
+      await new Promise(resolve => setTimeout(resolve, 150)); // milliseconds
+      // set the wait time as a function of the iteration level such that
+      // low level iterations have a bigger pause, so that it looks less hurried at the start
   }
 }
-
 
 function printPyramid(baseSize) {
   // Loop through the rows of the pyramid
@@ -122,12 +123,12 @@ function printPyramid(baseSize) {
 updateCanvasSize(); // Initialize canvas size
 window.addEventListener('resize', updateCanvasSize); // Recenter canvas on window resize
 canvas.addEventListener('click', updateCanvasSize);
-canvas.addEventListener('click', (event) => {
-  const clickedX = event.clientX - canvas.getBoundingClientRect().left;
-  const clickedY = event.clientY - canvas.getBoundingClientRect().top;
-  // Call a function to draw a new fractal centered at (clickedX, clickedY)
-  drawInteractiveFractal(clickedX, clickedY, /* other parameters */);
-});
+// canvas.addEventListener('click', (event) => {
+//   const clickedX = event.clientX - canvas.getBoundingClientRect().left;
+//   const clickedY = event.clientY - canvas.getBoundingClientRect().top;
+//   // Call a function to draw a new fractal centered at (clickedX, clickedY)
+//   drawInteractiveFractal(clickedX, clickedY, /* other parameters */);
+// });
 
 const msg = "hellooo?";
 console.log(msg);
@@ -139,3 +140,6 @@ printPyramid(9);
   //   draw fractal of increasing iteration level and proportionally decreasing 
   //   line width. each new iteration level being slightly shifted on the canvas (eg down,left)
   //   refresh canvas
+
+
+// set up github actions to make pushing updates / deploying to neocities from local repo ez
