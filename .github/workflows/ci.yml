@@ -1,3 +1,5 @@
+# Borrowing from https://jonathanchang.org/blog/deploying-your-static-site-to-neocities-using-github-actions/
+
 name: Build site
 
 on: [push, pull_request]
