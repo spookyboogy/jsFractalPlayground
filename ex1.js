@@ -11,9 +11,9 @@ const ctx = canvas.getContext('2d');
 let startX = 300; // X-coordinate of the triangle's starting point
 let startY = 300; // Y-coordinate of the triangle's starting point
 const size = 200; // Length of the triangle's sides
-const iterations = 7; // Number of iterations to display
-const lineWidth = .70;
-const strokeColors = palettes.palette4; // Assigning palette to strokeColors
+const iterations = 10; // Number of iterations to display
+const lineWidth = .50;
+const strokeColors = palettes.palette1; // Assigning palette to strokeColors
 let colorIndex = 0;
 
 // let config = {
@@ -81,26 +81,14 @@ async function updateCanvasSize() {
     await drawFractalRange(startX, startY, canvasSize, 1, 7, colorIndex);
     // await drawFractal(startX, startY, canvasSize, iterations, colorIndex);
 
-    // // Draw the second fractal
-    // const secondStartX = startX + 20;
-    // const secondStartY = startY + 20;
-    // await drawSecondFractal(secondStartX, secondStartY, size, iterations, 0);
 }
 
-// async function drawSecondFractal(x, y, size, iterations, colorIndex) {
-//   // Calculate the shifted coordinates
-//   const shiftedX = x + 20;
-//   const shiftedY = y + 20;
-// 
-//   // Draw the second fractal with the shifted coordinates
-//   await drawFractal(shiftedX, shiftedY, size, iterations, colorIndex);
-// }
 
 async function drawFractalRange(x, y, size, startIterations, endIterations, colorIndex) {
   for (let iterations = startIterations; iterations <= endIterations; iterations++) {
       await drawFractal(x, y, size, iterations, colorIndex);
       // introduce a delay between iterations for visualization purposes
-      await new Promise(resolve => setTimeout(resolve, 150)); // milliseconds
+      await new Promise(resolve => setTimeout(resolve, 200)); // milliseconds
       // set the wait time as a function of the iteration level such that
       // low level iterations have a bigger pause, so that it looks less hurried at the start
   }
