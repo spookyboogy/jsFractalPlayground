@@ -4,19 +4,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fractal Pyramid</title>
+  <title>△△△</title>
   <link rel="stylesheet" href="ex1.css">
+  <link rel="icon" href="neocities.png" type="image/png">
 </head>
 
 <body>
   <div id="titleContainer">
-    <h1>△△△</h1>
+    <!-- <h1>△△△</h1> -->
 		
 		<h2 id="subhead"></h2>
 
 			<script>
 				const s1 = " \u25B2 ";
-        const baseSize = 4;
+        const baseSize = 3;
         const fullSubhead = Array.from({ length: baseSize }, (_, index) => `${s1.repeat(index + 1)}`).join('<br>');
 				const subheadElement = document.getElementById("subhead");
 				subheadElement.innerHTML = fullSubhead;
