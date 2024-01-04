@@ -5,6 +5,7 @@
 *.swp
 
 secrets.txt
+gpt_context.txt
 
 _site
 .vscode
