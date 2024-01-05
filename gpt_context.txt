@@ -1,45 +1,29 @@
-#### ex1.html file
-
-
+--- ex1.html ---
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fractal and Pyramid</title>
-
-  <style>
-    body {
-      background-color: #1f1f1f;
-      color: #ffffff;
-      font-family: Arial, sans-serif;
-    }
-
-    #fractalCanvas {
-      /* background-color: #000000; */
-			width: 100%;
-			height: 100%;
-		}
-
-    #titleContainer {
-      text-align: center;
-      padding: 20px;
-    }
-  </style>
+  <meta property="og:title" content="⧋">
+  <meta property="og:description" content="Fractal fun">
+  <meta property="og:image" content="https://spookyboogy.neocities.org/preview.png">
+  <title>⧋</title>
+  <link rel="stylesheet" href="ex1.css">
+  <link rel="icon" href="neocities.png" type="image/png">
 </head>
 
 <body>
   <div id="titleContainer">
-    <h1>tri△ngle</h1>
+    <!-- <h1>△△△</h1> -->
 		
 		<h2 id="subhead"></h2>
 
 			<script>
-				var s1 = " \u25B2 ";
-				var s2 = " \u25BC ";
-				var fullSubhead = s1 + "<br>" + s1.repeat(2) + "<br>" + s1.repeat(3);
-				var subheadElement = document.getElementById("subhead");
+				const s1 = " \u25B2 ";
+        const baseSize = 3;
+        const fullSubhead = Array.from({ length: baseSize }, (_, index) => `${s1.repeat(index + 1)}`).join('<br>');
+				const subheadElement = document.getElementById("subhead");
 				subheadElement.innerHTML = fullSubhead;
 			</script>
 
@@ -47,7 +31,9 @@
 
 	<div id="canvasContainer">
 		<canvas id="fractalCanvas" width="600" height="600"></canvas>
-	</div>
+		<!-- <canvas id="fractalCanvas"></canvas> -->
+
+  </div>
 
   <div id="pyramidContainer"></div>
 
@@ -55,42 +41,38 @@
 </body>
 
 </html>
-
-#### ex1.js file
-
+--- ex1.js ---
 // 
 // llolearning javascript with fractals
 
-
 import palettes from './colorPalettes.js';
-
-const canvas = document.getElementById('fractalCanvas');
-const ctx = canvas.getContext('2d');
+console.log(palettes);
 
 const pyramidContainer = document.getElementById('pyramidContainer');
+const canvas = document.getElementById('fractalCanvas');
+const ctx = canvas.getContext('2d');
 
 let startX = 300; // X-coordinate of the triangle's starting point
 let startY = 300; // Y-coordinate of the triangle's starting point
 const size = 200; // Length of the triangle's sides
-const iterations = 7; // Number of iterations to display
-const lineWidth = .70
-console.log(palettes)
+let iterations = 11; // Number of iterations to display
+const lineWidth = .7;
+const strokeColors = palettes.palette1; // Assigning palette to strokeColors
+let colorIndex = 0;
 
-// for each palette:
-//   draw fractal of increasing iteration level and proportionally decreasing 
-//     line width. each new iteration level being slightly shifted on the canvas (eg down,left)
-//   refresh canvas
+// let config = {
+//   iterations : 7, 
+//   lineWidth : 0.7, 
+//   strokeColors : palettes.palette1,
+//   // ...
+// };
 
-// setting combos, interesting math there (related to colorIndex % palette.length) 
+// note on setting combos : interesting math related to colorIndex % palette.length 
 // palette5 , 8 iterations, 0.6 width
 // palette4, 7, .75
 // palette2, 8, .75
 // palette5, 11, .125
-
-// const { palette1 } = palettes; // Access palette4 directly
-const strokeColors = palettes.palette1 // Assigning palette to strokeColors
-
-let colorIndex = 0;
+// js note : Accesses palette4 directly using 'destructuring' : const { palette1 } = palettes; // 
 
 async function drawFractal(x, y, size, iterations, colorIndex) {
     if (iterations === 0) {
@@ -100,7 +82,7 @@ async function drawFractal(x, y, size, iterations, colorIndex) {
         ctx.lineTo(x + size, y);
         ctx.lineTo(x + size / 2, y + (Math.sqrt(3) * size) / 2);
         ctx.closePath();
-        ctx.strokeStyle = strokeColors[colorIndex % strokeColors.length];
+        ctx.strokeStyle = strokeColors[colorIndex % strokeColors.length]; 
         ctx.lineWidth = lineWidth; // 
         ctx.stroke();
   } else {
@@ -109,19 +91,9 @@ async function drawFractal(x, y, size, iterations, colorIndex) {
 	}
 }
 
-// async function drawSecondFractal(x, y, size, iterations, colorIndex) {
-//   // Calculate the shifted coordinates
-//   const shiftedX = x + 20;
-//   const shiftedY = y + 20;
-// 
-//   // Draw the second fractal with the shifted coordinates
-//   await drawFractal(shiftedX, shiftedY, size, iterations, colorIndex);
-// }
-
-
 async function drawFractalStep(x, y, size, iterations, colorIndex) {
 
-    await new Promise((resolve) => setTimeout(resolve, 0.0001)); // ms
+    await new Promise((resolve) => setTimeout(resolve, 0.000001)); // ms delay so that it animates drawing
 				
         await drawFractal(x, y, size / 2, 
                         iterations - 1, 
@@ -136,26 +108,33 @@ async function drawFractalStep(x, y, size, iterations, colorIndex) {
 
 async function updateCanvasSize() {
     
-    //   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+    //   ctx.clearRect(0, 0, canvas.width, canvas.height); // clears canvas
     const containerWidth = canvas.parentNode.clientWidth;
     const containerHeight = canvas.parentNode.clientHeight;
     const canvasSize = Math.min(containerWidth, containerHeight);
-  
-    canvas.width = canvasSize;
-    canvas.height = canvasSize;
 
+    // Adjust the canvas drawing buffer size to match the display size
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = canvasSize * dpr;
+    canvas.height = canvasSize * dpr;
+    ctx.scale(dpr, dpr);
+    
     const triangleHeight = (Math.sqrt(3) * canvasSize) / 2;
-
     const startX = canvas.width / 2 - canvasSize / 2;
     const startY = canvas.height / 2 - triangleHeight / 2;
 
-    await drawFractal(startX, startY, canvasSize, iterations, colorIndex);
+    await drawFractalRange(startX, startY, canvasSize, 1, iterations, colorIndex);
+    // await drawFractal(startX, startY, canvasSize, iterations, colorIndex);
+}
 
-    // // Draw the second fractal
-    // const secondStartX = startX + 20;
-    // const secondStartY = startY + 20;
-    // await drawSecondFractal(secondStartX, secondStartY, size, iterations, 0);
+async function drawFractalRange(x, y, size, startIterations, endIterations, colorIndex) {
+  for (let iterations = startIterations; iterations <= endIterations; iterations++) {
+      await drawFractal(x, y, size, iterations, colorIndex);
+      // introduce a delay between iterations for visualization purposes
+      await new Promise(resolve => setTimeout(resolve, 100)); // milliseconds
+      // set the wait time as a function of the iteration level such that
+      // low level iterations have a bigger pause, so that it looks less hurried at the start
+  }
 }
 
 function printPyramid(baseSize) {
@@ -172,28 +151,35 @@ function printPyramid(baseSize) {
   }
 }
 
-
-/**
- * iterLoop : Draw the fractal triangle with 'palette' color palette
- *            and 
- *
- * @param {integer} iterations - The iterative depth of the fractal.
- * @param {color palette container} palette - The second argument.
- * 
- */
-
-function iterLoop(iterations = 7, palette = colorStrokes, ) {
-
-}
-
-
-var msg = "hellooo?";
-console.log(msg);
-console.log("\nHell?\n");
-
-printPyramid(9);
-
 updateCanvasSize(); // Initialize canvas size
 window.addEventListener('resize', updateCanvasSize); // Recenter canvas on window resize
 canvas.addEventListener('click', updateCanvasSize);
+// canvas.addEventListener('click', (event) => {
+//   const clickedX = event.clientX - canvas.getBoundingClientRect().left;
+//   const clickedY = event.clientY - canvas.getBoundingClientRect().top;
+//   // Call a function to draw a new fractal centered at (clickedX, clickedY)
+//   drawInteractiveFractal(clickedX, clickedY, /* other parameters */);
+// });
 
+const msg = "hellooo?";
+console.log(msg);
+console.log("\nHell?\n");
+printPyramid(9);
+--- ex1.css ---
+body {
+    background-color: #1f1f1f;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+  }
+  
+  #fractalCanvas {
+    /* background-color: #000000; */
+    width: 100%;
+    height: 100%;
+  }
+  
+  #titleContainer {
+    text-align: center;
+    padding: 20px;
+  }
+  

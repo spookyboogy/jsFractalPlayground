@@ -2,7 +2,7 @@
 // llolearning javascript with fractals
 
 import palettes from './colorPalettes.js';
-console.log(palettes)
+console.log(palettes);
 
 const pyramidContainer = document.getElementById('pyramidContainer');
 const canvas = document.getElementById('fractalCanvas');
@@ -68,9 +68,13 @@ async function updateCanvasSize() {
     const containerWidth = canvas.parentNode.clientWidth;
     const containerHeight = canvas.parentNode.clientHeight;
     const canvasSize = Math.min(containerWidth, containerHeight);
-  
-    canvas.width = canvasSize;
-    canvas.height = canvasSize;
+
+    // Adjust the canvas drawing buffer size to match the display size
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = canvasSize * dpr;
+    canvas.height = canvasSize * dpr;
+    ctx.scale(dpr, dpr);
+    
     const triangleHeight = (Math.sqrt(3) * canvasSize) / 2;
     const startX = canvas.width / 2 - canvasSize / 2;
     const startY = canvas.height / 2 - triangleHeight / 2;
@@ -117,33 +121,3 @@ const msg = "hellooo?";
 console.log(msg);
 console.log("\nHell?\n");
 printPyramid(9);
-
-// todo:
-  // - add a mechanism for switching modes/configurations
-      // 
-      // 
-      //   
-  // implement a mode where:
-      // for each palette (probably clearing canvas on new palette):
-      //   draw fractal of increasing iteration level and proportionally decreasing 
-      //   line width. each new iteration level being slightly shifted on the canvas (eg down,left)
-      //   refresh canvas
-
-// [x] set up github actions to make pushing updates / deploying to neocities from local repo ez
-
-// features: 
-// - add (hideable) menu containing sliders for custom configs (iteration level, line width, etc)
-// - click, drag and release to set location where a second fractal gets drawn (to create 3d effect)
-
-// issues:
-// - depending on window size / resolution / platform, given a range of iterations to be drawn, 
-//   the actual amount of iterations drawn on-screen might not be the full iteration level intended.
-//   This is not so much a problem when drawing only a single fractal, rather than a range of them.
-//   It's actually much clearer / less muddied than drawing a whole range on top of itself (starting from 0).
-//   Other ideas would be to selectively draw certain iteration levels in the range, maybe skipping indices
-//   by 2nd or 3rds (or maybe depending on the palette being used) would produce a richer/faster animation
-//   when drawing ranges.
-
-// - dragging the window to resize it can be fun for creating 2nd/offset fractals, but it sometimes is too blurry
-//   because updateCanvas gets called too many times while dragging the window. see if it's possible to capture
-//   drag events in particular to reduce the number of times it triggers updateCanvas
