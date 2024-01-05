@@ -11,8 +11,8 @@ const ctx = canvas.getContext('2d');
 let startX = 300; // X-coordinate of the triangle's starting point
 let startY = 300; // Y-coordinate of the triangle's starting point
 const size = 200; // Length of the triangle's sides
-let iterations = 8; // Number of iterations to display
-const lineWidth = .625;
+let iterations = 11; // Number of iterations to display
+const lineWidth = .7;
 const strokeColors = palettes.palette1; // Assigning palette to strokeColors
 let colorIndex = 0;
 
@@ -49,7 +49,7 @@ async function drawFractal(x, y, size, iterations, colorIndex) {
 
 async function drawFractalStep(x, y, size, iterations, colorIndex) {
 
-    await new Promise((resolve) => setTimeout(resolve, 0.0001)); // ms delay. not sure of usefulness
+    await new Promise((resolve) => setTimeout(resolve, 0.000001)); // ms delay so that it animates drawing
 				
         await drawFractal(x, y, size / 2, 
                         iterations - 1, 
@@ -133,7 +133,7 @@ printPyramid(9);
 
 // features: 
 // - add (hideable) menu containing sliders for custom configs (iteration level, line width, etc)
-// - 
+// - click, drag and release to set location where a second fractal gets drawn (to create 3d effect)
 
 // issues:
 // - depending on window size / resolution / platform, given a range of iterations to be drawn, 
@@ -143,3 +143,7 @@ printPyramid(9);
 //   Other ideas would be to selectively draw certain iteration levels in the range, maybe skipping indices
 //   by 2nd or 3rds (or maybe depending on the palette being used) would produce a richer/faster animation
 //   when drawing ranges.
+
+// - dragging the window to resize it can be fun for creating 2nd/offset fractals, but it sometimes is too blurry
+//   because updateCanvas gets called too many times while dragging the window. see if it's possible to capture
+//   drag events in particular to reduce the number of times it triggers updateCanvas
