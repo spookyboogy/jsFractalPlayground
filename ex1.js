@@ -8,14 +8,17 @@ const pyramidContainer = document.getElementById('pyramidContainer');
 const canvas = document.getElementById('fractalCanvas');
 const ctx = canvas.getContext('2d');
 
-let startX = 300; // X-coordinate of the triangle's starting point
-let startY = 300; // Y-coordinate of the triangle's starting point
-const size = 200; // Length of the triangle's sides
+// not needing when dynamically resizing canvas according to window.devicePixelRatio
+// let startX = 300; // X-coordinate of the triangle's starting point
+// let startY = 300; // Y-coordinate of the triangle's starting point
+// const size = 200; // Length of the triangle's sides
+
 let iterations = 11; // Number of iterations to display
 const lineWidth = .7;
 const strokeColors = palettes.palette1; // Assigning palette to strokeColors
 let colorIndex = 0;
 
+// impementing configs for when multiple modes are introduced
 // let config = {
 //   iterations : 7, 
 //   lineWidth : 0.7, 
@@ -67,10 +70,18 @@ async function updateCanvasSize() {
     //   ctx.clearRect(0, 0, canvas.width, canvas.height); // clears canvas
     const containerWidth = canvas.parentNode.clientWidth;
     const containerHeight = canvas.parentNode.clientHeight;
-    const canvasSize = Math.min(containerWidth, containerHeight);
-
-    // Adjust the canvas drawing buffer size to match the display size
+    console.log(`height : ${containerHeight}`);
+    console.log(`height : ${containerWidth}`);
+    
+    
+    // Set the CSS size of the canvas to match the size of the container
     const dpr = window.devicePixelRatio || 1;
+    const canvasSize = Math.min(containerWidth, containerHeight) * dpr;
+    canvas.style.width = `${canvasSize}px`;
+    canvas.style.height = `${canvasSize}px`;
+    
+    // Adjust the canvas drawing buffer size to match the display size
+    console.log(`dpr : ${dpr}`)
     canvas.width = canvasSize * dpr;
     canvas.height = canvasSize * dpr;
     ctx.scale(dpr, dpr);
