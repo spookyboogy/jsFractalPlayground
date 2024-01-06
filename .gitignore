@@ -4,6 +4,7 @@
 *.mov
 *.swp
 
+notes.txt
 notes.md
 secrets.txt
 gpt_context.txt

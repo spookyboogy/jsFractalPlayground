@@ -85,7 +85,8 @@ async function updateCanvasSize() {
     const startY = canvas.height / 2 - triangleHeight / 2;
 
     await drawFractalRange(startX, startY, canvasSize, 1, iterations, colorIndex);
-    // await drawFractal(startX, startY, canvasSize, iterations, colorIndex);
+    // draw a single fractal at given iteration level
+    // await drawFractal(startX, startY, canvasSize, iterations, colorIndex);  
 }
 
 async function drawFractalRange(x, y, size, startIterations, endIterations, colorIndex) {
@@ -95,20 +96,6 @@ async function drawFractalRange(x, y, size, startIterations, endIterations, colo
       await new Promise(resolve => setTimeout(resolve, 100)); // milliseconds
       // set the wait time as a function of the iteration level such that
       // low level iterations have a bigger pause, so that it looks less hurried at the start
-  }
-}
-
-function printPyramid(baseSize) {
-  // Loop through the rows of the pyramid
-  for (let row = 1; row <= baseSize; row++) {
-    // Print spaces to create an indentation for each row
-    let spaces = ' '.repeat(baseSize - row);
-    // Print the triangles in each row
-    let triangles = '*'.repeat(row * 2 - 1);
-    // Combine the spaces and triangles to form the row
-    let rowOutput = spaces + triangles;
-    // Print the row to the console
-    console.log(rowOutput); 
   }
 }
 
@@ -127,14 +114,3 @@ updateCanvasSize(); // Initialize canvas size
 window.addEventListener('resize', updateCanvasSize); // Recenter canvas on window resize
 canvas.addEventListener('click', updateCanvasSize);
 
-// canvas.addEventListener('click', (event) => {
-//   const clickedX = event.clientX - canvas.getBoundingClientRect().left;
-//   const clickedY = event.clientY - canvas.getBoundingClientRect().top;
-//   // Call a function to draw a new fractal centered at (clickedX, clickedY)
-//   drawInteractiveFractal(clickedX, clickedY, /* other parameters */);
-// });
-
-const msg = "hellooo?";
-console.log(msg);
-console.log("\nHell?\n");
-printPyramid(9);
