@@ -9,11 +9,6 @@ const pyramidContainer = document.getElementById('pyramidContainer');
 const canvas = document.getElementById('fractalCanvas');
 const ctx = canvas.getContext('2d');
 
-// not needing when dynamically resizing canvas instead
-// let startX = 300; // X-coordinate of the triangle's starting point
-// let startY = 300; // Y-coordinate of the triangle's starting point
-// const size = 200; // Length of the triangle's sides
-
 let iterations = 11; // Number of iterations to display
 const lineWidth = .7;
 const strokeColors = palettes.palette1; // Assigning palette to strokeColors
@@ -114,5 +109,4 @@ document.getElementById("subhead").addEventListener("click", toggleInfoBox);
 window.addEventListener('resize', updateCanvasSize); // Recenter canvas on window resize
 canvas.addEventListener('click', updateCanvasSize);
 
-updateCanvasSize(); // Initialize canvas size
-
+updateCanvasSize(); // Initialize canvas
