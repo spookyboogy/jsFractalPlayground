@@ -66,7 +66,6 @@ async function drawFractalStep(x, y, size, iterations, colorIndex) {
                         colorIndex + 3); // 
 }
 
-
 async function updateCanvasSize() {
     
     logDisplaySizes()
