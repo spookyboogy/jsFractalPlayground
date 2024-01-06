@@ -18,7 +18,11 @@
 <body>
   <div id="titleContainer">
     <!-- <h1>△△△</h1> -->
-		<h2 id="subhead"></h2>
+    <div id="subheadContainer">
+      <h2 id="subhead"></h2>
+      <div id="infoBox" style="display: none;"></div>
+
+
       <script>
 				const s1 = " \u25B2 ";
         const baseSize = 3;
@@ -26,6 +30,8 @@
 				const subheadElement = document.getElementById("subhead");
 				subheadElement.innerHTML = fullSubhead;
 			</script>
+
+    </div>
   </div>
 
 	<div id="canvasContainer">
@@ -53,7 +59,7 @@ const pyramidContainer = document.getElementById('pyramidContainer');
 const canvas = document.getElementById('fractalCanvas');
 const ctx = canvas.getContext('2d');
 
-// not needing when dynamically resizing canvas according to window.devicePixelRatio
+// not needing when dynamically resizing canvas instead
 // let startX = 300; // X-coordinate of the triangle's starting point
 // let startY = 300; // Y-coordinate of the triangle's starting point
 // const size = 200; // Length of the triangle's sides
@@ -70,13 +76,6 @@ let colorIndex = 0;
 //   strokeColors : palettes.palette1,
 //   // ...
 // };
-
-// note on setting combos : interesting math related to colorIndex % palette.length 
-// palette5 , 8 iterations, 0.6 width
-// palette4, 7, .75
-// palette2, 8, .75
-// palette5, 11, .125
-// js note : Accesses palette4 directly using 'destructuring' : const { palette1 } = palettes; // 
 
 async function drawFractal(x, y, size, iterations, colorIndex) {
     if (iterations === 0) {
@@ -112,7 +111,7 @@ async function drawFractalStep(x, y, size, iterations, colorIndex) {
 
 async function updateCanvasSize() {
     
-    logDisplaySizes()
+    infoBox.innerHTML = logDisplaySizes(); // this effectively also calls logDisplaySizes()
     const containerWidth = canvas.parentNode.clientWidth;
     const containerHeight = canvas.parentNode.clientHeight;
     // getting dimensions from canvas.parentNode is much more crisp than from window.inner*
@@ -166,12 +165,24 @@ function printPyramid(baseSize) {
 updateCanvasSize(); // Initialize canvas size
 window.addEventListener('resize', updateCanvasSize); // Recenter canvas on window resize
 canvas.addEventListener('click', updateCanvasSize);
+
 // canvas.addEventListener('click', (event) => {
 //   const clickedX = event.clientX - canvas.getBoundingClientRect().left;
 //   const clickedY = event.clientY - canvas.getBoundingClientRect().top;
 //   // Call a function to draw a new fractal centered at (clickedX, clickedY)
 //   drawInteractiveFractal(clickedX, clickedY, /* other parameters */);
 // });
+
+// infoBox - used for displaying canvas/display size info
+const infoBox = document.getElementById("infoBox");
+function toggleInfoBox() {
+  // Toggle the visibility of the infoBox
+  infoBox.style.display = infoBox.style.display === "none" ? "block" : "none";
+  // Update the content of the infoBox with the information from logDisplaySizes()
+  infoBox.innerHTML = logDisplaySizes();
+}
+// Add a click event listener to the subhead element to call the function
+document.getElementById("subhead").addEventListener("click", toggleInfoBox);
 
 const msg = "hellooo?";
 console.log(msg);
@@ -191,7 +202,32 @@ body {
     font-family: Arial, sans-serif;
   }
 
+  #titleContainer {
+    background-color: #1f1f1f;
+    text-align: center;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
   
+  #subheadContainer {
+    display: flex;
+    background-color: #1f1f1f;
+    align-items: flex-start; /* Align items at the start of the flex container */
+  }
+
+  #infoBox {
+    background-color: #1f1f1f;
+    color: #35a700;
+    padding: 0px;
+    margin-top: 0px;
+  }
+  
+  #subhead {
+    flex-grow: 1; /* Allow the subhead to grow and fill the available space */
+  }
+
   #canvasContainer {
     width: 100%;
     height: 100%;
@@ -203,10 +239,5 @@ body {
     /* display: block; */
     width: 100%;
     height: 100%;
-  }
-  
-  #titleContainer {
-    text-align: center;
-    padding: 20px;
   }
   
