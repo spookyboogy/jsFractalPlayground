@@ -8,10 +8,8 @@ console.log(palettes);
 const pyramidContainer = document.getElementById('pyramidContainer');
 const canvas = document.getElementById('fractalCanvas');
 const ctx = canvas.getContext('2d');
-const infoBox = document.getElementById("infoBox");
 
-
-// not needing when dynamically resizing canvas according to window.devicePixelRatio
+// not needing when dynamically resizing canvas instead
 // let startX = 300; // X-coordinate of the triangle's starting point
 // let startY = 300; // Y-coordinate of the triangle's starting point
 // const size = 200; // Length of the triangle's sides
@@ -28,13 +26,6 @@ let colorIndex = 0;
 //   strokeColors : palettes.palette1,
 //   // ...
 // };
-
-// note on setting combos : interesting math related to colorIndex % palette.length 
-// palette5 , 8 iterations, 0.6 width
-// palette4, 7, .75
-// palette2, 8, .75
-// palette5, 11, .125
-// js note : Accesses palette4 directly using 'destructuring' : const { palette1 } = palettes; // 
 
 async function drawFractal(x, y, size, iterations, colorIndex) {
     if (iterations === 0) {
@@ -70,8 +61,7 @@ async function drawFractalStep(x, y, size, iterations, colorIndex) {
 
 async function updateCanvasSize() {
     
-    // logDisplaySizes();
-    infoBox.innerHTML = logDisplaySizes();
+    infoBox.innerHTML = logDisplaySizes(); // this effectively also calls logDisplaySizes()
     const containerWidth = canvas.parentNode.clientWidth;
     const containerHeight = canvas.parentNode.clientHeight;
     // getting dimensions from canvas.parentNode is much more crisp than from window.inner*
@@ -133,18 +123,16 @@ canvas.addEventListener('click', updateCanvasSize);
 //   drawInteractiveFractal(clickedX, clickedY, /* other parameters */);
 // });
 
+// infoBox - used for displaying canvas/display size info
+const infoBox = document.getElementById("infoBox");
 function toggleInfoBox() {
   // Toggle the visibility of the infoBox
   infoBox.style.display = infoBox.style.display === "none" ? "block" : "none";
   // Update the content of the infoBox with the information from logDisplaySizes()
   infoBox.innerHTML = logDisplaySizes();
 }
-
 // Add a click event listener to the subhead element to call the function
 document.getElementById("subhead").addEventListener("click", toggleInfoBox);
-
-
-
 
 const msg = "hellooo?";
 console.log(msg);
