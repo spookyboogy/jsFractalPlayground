@@ -8,6 +8,8 @@ console.log(palettes);
 const pyramidContainer = document.getElementById('pyramidContainer');
 const canvas = document.getElementById('fractalCanvas');
 const ctx = canvas.getContext('2d');
+const infoBox = document.getElementById("infoBox");
+
 
 // not needing when dynamically resizing canvas according to window.devicePixelRatio
 // let startX = 300; // X-coordinate of the triangle's starting point
@@ -68,7 +70,8 @@ async function drawFractalStep(x, y, size, iterations, colorIndex) {
 
 async function updateCanvasSize() {
     
-    logDisplaySizes()
+    // logDisplaySizes();
+    infoBox.innerHTML = logDisplaySizes();
     const containerWidth = canvas.parentNode.clientWidth;
     const containerHeight = canvas.parentNode.clientHeight;
     // getting dimensions from canvas.parentNode is much more crisp than from window.inner*
@@ -122,12 +125,26 @@ function printPyramid(baseSize) {
 updateCanvasSize(); // Initialize canvas size
 window.addEventListener('resize', updateCanvasSize); // Recenter canvas on window resize
 canvas.addEventListener('click', updateCanvasSize);
+
 // canvas.addEventListener('click', (event) => {
 //   const clickedX = event.clientX - canvas.getBoundingClientRect().left;
 //   const clickedY = event.clientY - canvas.getBoundingClientRect().top;
 //   // Call a function to draw a new fractal centered at (clickedX, clickedY)
 //   drawInteractiveFractal(clickedX, clickedY, /* other parameters */);
 // });
+
+function toggleInfoBox() {
+  // Toggle the visibility of the infoBox
+  infoBox.style.display = infoBox.style.display === "none" ? "block" : "none";
+  // Update the content of the infoBox with the information from logDisplaySizes()
+  infoBox.innerHTML = logDisplaySizes();
+}
+
+// Add a click event listener to the subhead element to call the function
+document.getElementById("subhead").addEventListener("click", toggleInfoBox);
+
+
+
 
 const msg = "hellooo?";
 console.log(msg);

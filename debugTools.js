@@ -17,10 +17,16 @@ export function logDisplaySizes() {
     // Get dpr
     const devicePixelRatio = window.devicePixelRatio || 1;
 
+    // Create a string with the sizes
+    const sizesString = `
+      Viewport Size: ${viewportWidth} x ${viewportHeight}<br>
+      Canvas Size: ${canvasWidth} x ${canvasHeight}<br>
+      Canvas Buffer Size: ${canvasBufferWidth} x ${canvasBufferHeight}<br>
+      Device Pixel Ratio: ${devicePixelRatio}
+    `;
     // Log the sizes to the console
-    console.log(`\nViewport Size: ${viewportWidth} x ${viewportHeight}`);
-    console.log(`Canvas Size: ${canvasWidth} x ${canvasHeight}`);
-    console.log(`Canvas Buffer Size: ${canvasBufferWidth} x ${canvasBufferHeight}`);
-    console.log(`Device Pixel Ratio: ${devicePixelRatio}`);
-  }
+    console.log(sizesString);
+    // Return the sizes as a string (useful for updating the infoBox content)
+    return sizesString;
+}
   
