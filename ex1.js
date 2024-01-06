@@ -61,12 +61,11 @@ async function drawFractalStep(x, y, size, iterations, colorIndex) {
 
 async function updateCanvasSize() {
     
-    infoBox.innerHTML = logDisplaySizes(); // this effectively also calls logDisplaySizes()
     const containerWidth = canvas.parentNode.clientWidth;
     const containerHeight = canvas.parentNode.clientHeight;
     // getting dimensions from canvas.parentNode is much more crisp than from window.inner*
-
     const canvasSize = Math.min(containerWidth, containerHeight);
+
     // Set the CSS size of the canvas to match the size of the container (this breaks things currently)
     // canvas.style.width = `${canvasSize}px`;
     // canvas.style.height = `${canvasSize}px`;
@@ -74,6 +73,9 @@ async function updateCanvasSize() {
     // Adjust the canvas drawing buffer size to match the display size
     canvas.width = canvasSize;
     canvas.height = canvasSize;
+
+    // Update infobox and log info to console
+    infoBox.innerHTML = logDisplaySizes().html; 
     
     // const dpr = window.devicePixelRatio || 1;
     // canvas.width = canvasSize * dpr;
@@ -105,12 +107,12 @@ function toggleInfoBox() {
   // Toggle the visibility of the infoBox
   infoBox.style.display = infoBox.style.display === "none" ? "block" : "none";
   // Update the content of the infoBox with the information from logDisplaySizes()
-  infoBox.innerHTML = logDisplaySizes();
+  infoBox.innerHTML = logDisplaySizes().html;
 }
 // Add a click event listener to the subhead element to call the function
 document.getElementById("subhead").addEventListener("click", toggleInfoBox);
-
-updateCanvasSize(); // Initialize canvas size
 window.addEventListener('resize', updateCanvasSize); // Recenter canvas on window resize
 canvas.addEventListener('click', updateCanvasSize);
+
+updateCanvasSize(); // Initialize canvas size
 
