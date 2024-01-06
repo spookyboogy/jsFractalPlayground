@@ -15,23 +15,19 @@
 <body>
   <div id="titleContainer">
     <!-- <h1>△△△</h1> -->
-		
 		<h2 id="subhead"></h2>
-
-			<script>
+      <script>
 				const s1 = " \u25B2 ";
         const baseSize = 3;
         const fullSubhead = Array.from({ length: baseSize }, (_, index) => `${s1.repeat(index + 1)}`).join('<br>');
 				const subheadElement = document.getElementById("subhead");
 				subheadElement.innerHTML = fullSubhead;
 			</script>
-
   </div>
 
 	<div id="canvasContainer">
 		<canvas id="fractalCanvas" width="600" height="600"></canvas>
 		<!-- <canvas id="fractalCanvas"></canvas> -->
-
   </div>
 
   <div id="pyramidContainer"></div>
