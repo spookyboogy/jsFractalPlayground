@@ -31,11 +31,6 @@ body {
     flex-grow: 1; /* Allow the subhead to grow and fill the available space */
   }
 
-  /* #contentContainer {
-    display: flex;
-    align-items: center; /* Center vertically */
-  } */
-
   #subhead {
     flex-grow: 1; /* Allow the subhead to grow and fill the available space */
   }
