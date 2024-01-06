@@ -10,7 +10,7 @@ body {
   }
 
   #titleContainer {
-    background-color: #b31919;
+    background-color: #1f1f1f;
     text-align: center;
     padding: 0px;
     display: flex;
@@ -20,13 +20,13 @@ body {
   
   #subheadContainer {
     display: flex;
-    background-color: #941294;
+    background-color: #1f1f1f;
     align-items: flex-start; /* Align items at the start of the flex container */
   }
 
   #infoBox {
-    background-color: #5c5858;
-    color: #50f105a2;
+    background-color: #1f1f1f;
+    color: #35a700;
     padding: 0px;
     margin-top: 0px;
   }
