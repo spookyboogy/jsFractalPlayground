@@ -22,9 +22,9 @@ body {
   }
   
   #subheadContainer {
-    display: flex;
     background-color: #1f1f1f;
     align-items: center; /* Align items at the start of the flex container */
+    display: flex;
   }
 
   .content-wrapper {
@@ -37,22 +37,26 @@ body {
 
   #pyramidContainer {
     background-color: #1f1f1f;
+    color: #7200a7b6;
     flex-grow: 1; /* Allow the subhead to grow and fill the available space */
     flex-direction: column;
   }
 
   #infoBox {
     background-color: #1f1f1f;
-    color: #35a700;
+    color: #4fd80fbb;
     padding: 0px;
     margin-top: 0px;
     margin-left: 0px; 
   }
   
   #canvasContainer {
+    background-color: #1f1f1f;
     width: 100%;
     height: 100%;
-    /* Remove padding and border if any */
+    padding: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
   }
 
   #fractalCanvas {
@@ -60,5 +64,9 @@ body {
     /* display: block; */
     width: 100%;
     height: 100%;
+    padding: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+
   }
   
