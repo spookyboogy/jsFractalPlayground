@@ -2,6 +2,7 @@
 // llolearning javascript with fractals
 
 import palettes from './colorPalettes.js';
+import { logDisplaySizes } from './debugTools.js';
 console.log(palettes);
 
 const pyramidContainer = document.getElementById('pyramidContainer');
@@ -65,23 +66,21 @@ async function drawFractalStep(x, y, size, iterations, colorIndex) {
                         colorIndex + 3); // 
 }
 
+
 async function updateCanvasSize() {
     
-    //   ctx.clearRect(0, 0, canvas.width, canvas.height); // clears canvas
+    logDisplaySizes()
     const containerWidth = canvas.parentNode.clientWidth;
     const containerHeight = canvas.parentNode.clientHeight;
-    console.log(`height : ${containerHeight}`);
-    console.log(`height : ${containerWidth}`);
-    
-    
-    // Set the CSS size of the canvas to match the size of the container
+    // getting dimensions from canvas.parentNode is much more crisp than from window.inner*
+
     const dpr = window.devicePixelRatio || 1;
-    const canvasSize = Math.min(containerWidth, containerHeight) * dpr;
-    canvas.style.width = `${canvasSize}px`;
-    canvas.style.height = `${canvasSize}px`;
+    const canvasSize = Math.min(containerWidth, containerHeight);
+    // Set the CSS size of the canvas to match the size of the container (this breaks things currently)
+    // canvas.style.width = `${canvasSize}px`;
+    // canvas.style.height = `${canvasSize}px`;
     
     // Adjust the canvas drawing buffer size to match the display size
-    console.log(`dpr : ${dpr}`)
     canvas.width = canvasSize * dpr;
     canvas.height = canvasSize * dpr;
     ctx.scale(dpr, dpr);

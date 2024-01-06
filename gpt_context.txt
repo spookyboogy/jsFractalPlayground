@@ -30,8 +30,8 @@
   </div>
 
 	<div id="canvasContainer">
-		<!-- <canvas id="fractalCanvas" width="600" height="600"></canvas> -->
-		<canvas id="fractalCanvas"></canvas>
+		<canvas id="fractalCanvas" width="600" height="600"></canvas>
+		<!-- <canvas id="fractalCanvas"></canvas> -->
 
   </div>
 
@@ -117,14 +117,14 @@ async function updateCanvasSize() {
     console.log(`height : ${containerHeight}`);
     console.log(`height : ${containerWidth}`);
     
-    const canvasSize = Math.min(containerWidth, containerHeight);
     
     // Set the CSS size of the canvas to match the size of the container
+    const dpr = window.devicePixelRatio || 1;
+    const canvasSize = Math.min(containerWidth, containerHeight) * dpr;
     canvas.style.width = `${canvasSize}px`;
     canvas.style.height = `${canvasSize}px`;
     
     // Adjust the canvas drawing buffer size to match the display size
-    const dpr = window.devicePixelRatio || 1;
     console.log(`dpr : ${dpr}`)
     canvas.width = canvasSize * dpr;
     canvas.height = canvasSize * dpr;
@@ -177,14 +177,23 @@ console.log(msg);
 console.log("\nHell?\n");
 printPyramid(9);
 --- ex1.css ---
-body {
+html, body {
     background-color: #1f1f1f;
+    width: 100%;
+    height: 100%;
     color: #ffffff;
     font-family: Arial, sans-serif;
   }
+
   
+  #canvasContainer {
+    width: 100%;
+    height: 100%;
+    /* Remove padding and border if any */
+  }
+
   #fractalCanvas {
-    background-color: #000000;
+    /* background-color: #000000; */
     width: 100%;
     height: 100%;
   }

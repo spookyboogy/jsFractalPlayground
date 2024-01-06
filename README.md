@@ -4,6 +4,7 @@ The site can be viewed [here](https://spookyboogy.neocities.org/)
 
 ## To-Do List
 
+- [ ] Add a second drawing mode (2nd offset fractal for 3d effect for eg)
 - [ ] Add a mechanism for switching modes/configurations.
 - [x] Set up GitHub actions to make pushing updates / deploying to Neocities from local repo easy.
 - 
