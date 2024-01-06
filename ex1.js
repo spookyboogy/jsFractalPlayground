@@ -73,17 +73,18 @@ async function updateCanvasSize() {
     const containerHeight = canvas.parentNode.clientHeight;
     // getting dimensions from canvas.parentNode is much more crisp than from window.inner*
 
-    const dpr = window.devicePixelRatio || 1;
     const canvasSize = Math.min(containerWidth, containerHeight);
     // Set the CSS size of the canvas to match the size of the container (this breaks things currently)
     // canvas.style.width = `${canvasSize}px`;
     // canvas.style.height = `${canvasSize}px`;
     
     // Adjust the canvas drawing buffer size to match the display size
-    // canvas.width = canvasSize * dpr;
-    // canvas.height = canvasSize * dpr;
     canvas.width = canvasSize;
     canvas.height = canvasSize;
+    
+    // const dpr = window.devicePixelRatio || 1;
+    // canvas.width = canvasSize * dpr;
+    // canvas.height = canvasSize * dpr;
     // ctx.scale(dpr, dpr);
     
     const triangleHeight = (Math.sqrt(3) * canvasSize) / 2;
