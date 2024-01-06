@@ -80,8 +80,10 @@ async function updateCanvasSize() {
     // canvas.style.height = `${canvasSize}px`;
     
     // Adjust the canvas drawing buffer size to match the display size
-    canvas.width = canvasSize * dpr;
-    canvas.height = canvasSize * dpr;
+    // canvas.width = canvasSize * dpr;
+    // canvas.height = canvasSize * dpr;
+    canvas.width = canvasSize;
+    canvas.height = canvasSize;
     ctx.scale(dpr, dpr);
     
     const triangleHeight = (Math.sqrt(3) * canvasSize) / 2;
