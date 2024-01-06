@@ -84,7 +84,7 @@ async function updateCanvasSize() {
     // canvas.height = canvasSize * dpr;
     canvas.width = canvasSize;
     canvas.height = canvasSize;
-    ctx.scale(dpr, dpr);
+    // ctx.scale(dpr, dpr);
     
     const triangleHeight = (Math.sqrt(3) * canvasSize) / 2;
     const startX = canvas.width / 2 - canvasSize / 2;
