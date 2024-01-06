@@ -36,7 +36,7 @@ async function drawFractal(x, y, size, iterations, colorIndex) {
         ctx.lineTo(x + size / 2, y + (Math.sqrt(3) * size) / 2);
         ctx.closePath();
         ctx.strokeStyle = strokeColors[colorIndex % strokeColors.length]; 
-        ctx.lineWidth = lineWidth; // 
+        ctx.lineWidth = lineWidth;
         ctx.stroke();
   } else {
     // Recursive case: Generate three smaller triangles
