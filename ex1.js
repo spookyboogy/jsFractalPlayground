@@ -112,17 +112,6 @@ function printPyramid(baseSize) {
   }
 }
 
-updateCanvasSize(); // Initialize canvas size
-window.addEventListener('resize', updateCanvasSize); // Recenter canvas on window resize
-canvas.addEventListener('click', updateCanvasSize);
-
-// canvas.addEventListener('click', (event) => {
-//   const clickedX = event.clientX - canvas.getBoundingClientRect().left;
-//   const clickedY = event.clientY - canvas.getBoundingClientRect().top;
-//   // Call a function to draw a new fractal centered at (clickedX, clickedY)
-//   drawInteractiveFractal(clickedX, clickedY, /* other parameters */);
-// });
-
 // infoBox - used for displaying canvas/display size info
 const infoBox = document.getElementById("infoBox");
 function toggleInfoBox() {
@@ -133,6 +122,17 @@ function toggleInfoBox() {
 }
 // Add a click event listener to the subhead element to call the function
 document.getElementById("subhead").addEventListener("click", toggleInfoBox);
+
+updateCanvasSize(); // Initialize canvas size
+window.addEventListener('resize', updateCanvasSize); // Recenter canvas on window resize
+canvas.addEventListener('click', updateCanvasSize);
+
+// canvas.addEventListener('click', (event) => {
+//   const clickedX = event.clientX - canvas.getBoundingClientRect().left;
+//   const clickedY = event.clientY - canvas.getBoundingClientRect().top;
+//   // Call a function to draw a new fractal centered at (clickedX, clickedY)
+//   drawInteractiveFractal(clickedX, clickedY, /* other parameters */);
+// });
 
 const msg = "hellooo?";
 console.log(msg);
