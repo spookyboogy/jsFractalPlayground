@@ -17,6 +17,7 @@ const infoBox = document.getElementById("infoBox");
 
 let iterations = 11; // Number of iterations to display
 let lineWidth = .7;
+
 let paletteIndex = 0;
 let colorIndex = 0;
 let strokeColors = palettes.palette1; // Assigning initial palette to strokeColors
@@ -113,6 +114,14 @@ function switchColorPalette(event){
   console.log(`current palette : \n${strokeColors}`);
 }
 
+// infoBox - used for displaying canvas/display size info
+function toggleInfoBox() {
+  // Toggle the visibility of the infoBox
+  infoBox.style.display = infoBox.style.display === "none" ? "block" : "none";
+  // Update the content of the infoBox with the information from logDisplaySizes()
+  infoBox.innerHTML = logDisplaySizes().html;
+}
+
 function handleKeyDown(event) {
   // Check if the pressed key is 'c'
   if (event.key === 'c') {
@@ -122,18 +131,39 @@ function handleKeyDown(event) {
   }
 }
 
-// infoBox - used for displaying canvas/display size info
-function toggleInfoBox() {
-  // Toggle the visibility of the infoBox
-  infoBox.style.display = infoBox.style.display === "none" ? "block" : "none";
-  // Update the content of the infoBox with the information from logDisplaySizes()
-  infoBox.innerHTML = logDisplaySizes().html;
+// Initialize touch start variable
+let touchStartX = 0;
+
+function handleTouchStart(event) {
+  touchStartX = event.touches[0].clientX;
+}
+
+function handleTouchMove(event) {
+  const touchEndX = event.touches[0].clientX;
+  const deltaX = touchEndX - touchStartX;
+  // Threshold for considering the swipe as intentional
+  const minSwipeDistance = 50;
+  if (deltaX > minSwipeDistance) {
+    switchColorPalette();
+    updateCanvasSize();
+  } else if (deltaX < -minSwipeDistance) {
+    // Implement handling for left swipe if needed
+    // For now, let's just have it do the same
+    switchColorPalette();
+    updateCanvasSize();
+  }
 }
 
 // Add a click event listener to the subhead element to call the function
 document.getElementById("subhead").addEventListener("click", toggleInfoBox);
-window.addEventListener('resize', updateCanvasSize); // Recenter canvas on window resize
+// Recenter and update canvas on window resize
+window.addEventListener('resize', updateCanvasSize); 
+// Add keydown listener for implementing keybindings
 document.addEventListener('keydown', handleKeyDown);
+// Add click event listener to the canvas
 canvas.addEventListener('click', updateCanvasSize);
+// Add touch event listeners to the canvas
+canvas.addEventListener('touchstart', handleTouchStart);
+canvas.addEventListener('touchmove', handleTouchMove);
 
 updateCanvasSize(); // Initialize canvas
