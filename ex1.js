@@ -134,6 +134,7 @@ function handleKeyDown(event) {
 // Initialize touch start variable
 let touchStartX = 0;
 // hasSwiped variable to prevent multiple swipes from being read during one long swipe
+// might be better to have a listener/handler for 'touchend' instead
 let hasSwiped = false; 
 function handleTouchStart(event) {
   touchStartX = event.touches[0].clientX;
