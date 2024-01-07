@@ -1,5 +1,10 @@
-// 
-// llolearning javascript with fractals
+// ex1.js
+/*
+  Contains the logic for generating and drawing a Sierpinski triangle
+  and handling user interactions such as clicks and window resizes, among other things.
+  
+  lolearning javascript with fractals
+*/
 
 import palettes from './colorPalettes.js';
 import { logDisplaySizes } from './debugTools.js';
