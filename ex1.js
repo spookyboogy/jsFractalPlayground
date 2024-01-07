@@ -13,11 +13,13 @@ console.log(palettes);
 const pyramidContainer = document.getElementById('pyramidContainer');
 const canvas = document.getElementById('fractalCanvas');
 const ctx = canvas.getContext('2d');
+const infoBox = document.getElementById("infoBox");
 
 let iterations = 11; // Number of iterations to display
-const lineWidth = .7;
-const strokeColors = palettes.palette1; // Assigning palette to strokeColors
+let lineWidth = .7;
+let paletteIndex = 0;
 let colorIndex = 0;
+let strokeColors = palettes.palette1; // Assigning initial palette to strokeColors
 
 // impementing configs for when multiple modes are introduced
 // let config = {
@@ -101,17 +103,37 @@ async function drawFractalRange(x, y, size, startIterations, endIterations, colo
   }
 }
 
+function switchColorPalette(event){
+  paletteIndex = (paletteIndex + 1) % Object.keys(palettes).length;
+  // testing
+  // let _strokeColors = palettes[Object.keys(palettes)[paletteIndex]]
+  // console.log(`new palette : ${_strokeColors}`)
+  strokeColors = palettes[Object.keys(palettes)[paletteIndex]]
+  console.log(`palette index : ${paletteIndex}`)
+  console.log(`current palette : \n${strokeColors}`);
+}
+
+function handleKeyDown(event) {
+  // Check if the pressed key is 'c'
+  if (event.key === 'c') {
+    // Switch color palette and update canvas
+    switchColorPalette();
+    updateCanvasSize();
+  }
+}
+
 // infoBox - used for displaying canvas/display size info
-const infoBox = document.getElementById("infoBox");
 function toggleInfoBox() {
   // Toggle the visibility of the infoBox
   infoBox.style.display = infoBox.style.display === "none" ? "block" : "none";
   // Update the content of the infoBox with the information from logDisplaySizes()
   infoBox.innerHTML = logDisplaySizes().html;
 }
+
 // Add a click event listener to the subhead element to call the function
 document.getElementById("subhead").addEventListener("click", toggleInfoBox);
 window.addEventListener('resize', updateCanvasSize); // Recenter canvas on window resize
+document.addEventListener('keydown', handleKeyDown);
 canvas.addEventListener('click', updateCanvasSize);
 
 updateCanvasSize(); // Initialize canvas
