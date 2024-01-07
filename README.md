@@ -6,9 +6,12 @@ You can view the project [here](https://spookyboogy.neocities.org/), on Neocitie
 ## To-Do List
 
 - [ ] Add a second drawing mode (2nd offset fractal for 3d effect for eg)
-- [ ] Add a mechanism for switching modes/configurations.
+- [x] Add mechanism for live swapping color palettes
+- [ ] Add a mechanism for switching drawing modes/configurations.
 - [x] Set up GitHub actions to make pushing updates / deploying to Neocities from local repo easy.
 - [x] Add toggle-able info panel for mobile debugging
+- [ ] Consider adding (small, maybe hidden) buttons to github repo or other links
+- [ ] Remove redundant or underwhelming color palettes, add better ones
 
 ## Implementation Ideas
 
