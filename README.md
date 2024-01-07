@@ -1,13 +1,14 @@
-# Project Notes and To-Do's
-A project for learning various javascript and web development concepts with fractals.
-The site can be viewed [here](https://spookyboogy.neocities.org/)
+
+A little project for learning various javascript and web development concepts (with fractals) 
+
+You can view the project [here](https://spookyboogy.neocities.org/), on Neocities.
 
 ## To-Do List
 
 - [ ] Add a second drawing mode (2nd offset fractal for 3d effect for eg)
 - [ ] Add a mechanism for switching modes/configurations.
 - [x] Set up GitHub actions to make pushing updates / deploying to Neocities from local repo easy.
-- 
+- [x] Add toggle-able info panel for mobile debugging
 
 ## Implementation Ideas
 
@@ -19,8 +20,8 @@ The site can be viewed [here](https://spookyboogy.neocities.org/)
 
 ## Features-to-add
 
-- Add a (hideable) menu containing sliders for custom configs (iteration level, line width, etc).
-- Click, drag, and release to set the location where a second fractal gets drawn (to create a 3D effect).
+- [ ] A (hideable) menu containing sliders for custom configs (iteration level, line width, etc), with live updating.
+- [ ] Click, drag, and release to set the location where a second fractal gets drawn (to create a 3D effect).
 
 ## Issues
 
