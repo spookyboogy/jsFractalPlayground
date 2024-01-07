@@ -133,24 +133,25 @@ function handleKeyDown(event) {
 
 // Initialize touch start variable
 let touchStartX = 0;
-
+// hasSwiped variable to prevent multiple swipes from being read during one long swipe
+let hasSwiped = false; 
 function handleTouchStart(event) {
   touchStartX = event.touches[0].clientX;
 }
-
-function handleTouchMove(event) {
+async function handleTouchMove(event) {
   const touchEndX = event.touches[0].clientX;
   const deltaX = touchEndX - touchStartX;
   // Threshold for considering the swipe as intentional
   const minSwipeDistance = 50;
-  if (deltaX > minSwipeDistance) {
-    switchColorPalette();
-    updateCanvasSize();
-  } else if (deltaX < -minSwipeDistance) {
-    // Implement handling for left swipe if needed
-    // For now, let's just have it do the same
-    switchColorPalette();
-    updateCanvasSize();
+  if (deltaX > minSwipeDistance || deltaX < -minSwipeDistance) {
+    // add palette deincrement case for when left swiping eventually
+    if (!hasSwiped) {
+      hasSwiped = true;
+      switchColorPalette();
+      await updateCanvasSize();  // Wait for canvas update to complete
+    }
+  } else {
+    hasSwiped = false;  // Reset the flag if the swipe distance is less than the threshold
   }
 }
 
