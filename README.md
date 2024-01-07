@@ -10,7 +10,7 @@ You can view the project [here](https://spookyboogy.neocities.org/), on Neocitie
 - [ ] Add a mechanism for switching drawing modes/configurations.
 - [x] Set up GitHub actions to make pushing updates / deploying to Neocities from local repo easy.
 - [x] Add toggle-able info panel for mobile debugging
-- [ ] Consider adding (small, maybe hidden) buttons to github repo or other links
+- [ ] Consider adding (small, maybe hidden) buttons to github repo or other links, or a single button which unpacks an array of buttons (animated preferably)
 - [ ] Remove redundant or underwhelming color palettes, add better ones
 
 ## Implementation Ideas
