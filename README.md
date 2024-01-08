@@ -12,6 +12,8 @@ You can view the project [here](https://spookyboogy.neocities.org/), on Neocitie
 - [x] Add toggle-able info panel for mobile debugging
 - [ ] Consider adding (small, maybe hidden) buttons to github repo or other links, or a single button which unpacks an array of buttons (animated preferably)
 - [ ] Remove redundant or underwhelming color palettes, add better ones
+- [ ] add a keybinding for resetting canvas (for when it gets too busy)
+- [ ] and/or add a default auto reset/looping mode to prevent oversaturation
 
 ## Implementation Ideas
 
