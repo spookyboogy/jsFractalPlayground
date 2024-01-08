@@ -118,10 +118,10 @@ function switchColorPalette(event){
 
 // infoBox - used for displaying canvas/display size info
 function toggleInfoBox() {
-  // Toggle the visibility of the infoBox
-  infoBox.style.display = infoBox.style.display === "none" ? "block" : "none";
   // Update the content of the infoBox with the information from logDisplaySizes()
   infoBox.innerHTML = logDisplaySizes().html;
+  // Toggle the visibility of the infoBox
+  infoBox.style.display = infoBox.style.display === "none" ? "block" : "none";
 }
 
 function toggleKaoNashi() {
@@ -165,7 +165,7 @@ async function handleTouchMove(event) {
 }
 
 // Add a click event listener to the subhead element to call the function
-document.getElementById("subhead").addEventListener("click", toggleInfoBox);
+document.getElementById("pyramidContainer").addEventListener("click", toggleInfoBox);
 // Recenter and update canvas on window resize
 window.addEventListener('resize', updateCanvasSize); 
 // Add keydown listener for implementing keybindings
