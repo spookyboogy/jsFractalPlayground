@@ -21,7 +21,7 @@ export function logDisplaySizes() {
   const sizesText = `
     Viewport Size: ${parseInt(viewportWidth)} x ${parseInt(viewportHeight)}
     Canvas Size: ${parseInt(canvasWidth)} x ${parseInt(canvasHeight)}
-    Canvas Buffer Size: ${parseInt(canvasBufferWidth)} x ${parseInt(canvasBufferHeight)}
+    Buffer Size: ${parseInt(canvasBufferWidth)} x ${parseInt(canvasBufferHeight)}
     Device Pixel Ratio: ${parseInt(devicePixelRatio)}
   `;
 
@@ -29,7 +29,7 @@ export function logDisplaySizes() {
   const sizesHTML = `
     Viewport Size: ${parseInt(viewportWidth)} x ${parseInt(viewportHeight)}<br>
     Canvas Size: ${parseInt(canvasWidth)} x ${parseInt(canvasHeight)}<br>
-    Canvas Buffer Size: ${parseInt(canvasBufferWidth)} x ${parseInt(canvasBufferHeight)}<br>
+    Buffer Size: ${parseInt(canvasBufferWidth)} x ${parseInt(canvasBufferHeight)}<br>
     Device Pixel Ratio: ${parseInt(devicePixelRatio)}
   `;
 
