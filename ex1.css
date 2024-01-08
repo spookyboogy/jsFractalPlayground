@@ -12,7 +12,9 @@ body {
   }
 
   #titleContainer {
-    background-color: #1f1f1f;
+    /* background-color: #1f1f1f; */
+    background-image: url('/resources/banner1.png');
+    opacity: 0.8;
     text-align: center;
     margin: 0;
     padding: 0;
@@ -25,7 +27,8 @@ body {
   }
   
   #subheadContainer {
-    background-color: #1f1f1f;
+    /* background-color: #1f1f1f; */
+
     align-items: center; /* Align items at the start of the flex container */
     display: flex;
   }
@@ -39,14 +42,16 @@ body {
   }
 
   #pyramidContainer {
-    background-color: #1f1f1f;
-    color: #7200a7b6;
+    /* background-color: #1f1f1f; */
+    /* color: #7200a7b6; */
+    color: #1f1f1f;
     flex-grow: 1; /* Allow the subhead to grow and fill the available space */
     flex-direction: column;
   }
 
   #infoBox {
-    background-color: #1f1f1f;
+    background-color: #1f1f1f65;
+    display: none;
     color: #4fd80fbb;
     padding: 0px;
     margin-top: 0px;
@@ -54,9 +59,14 @@ body {
   }
   
   #canvasContainer {
-    background-color: #1f1f1f;
+    /* background-color: #1f1f1f; */
     /* background-color: transparent;  */
-    background: url('/resources/kaonashi2.gif') center/cover no-repeat;
+    background-image: url('/resources/kaonashi.gif');
+    /* background-image: none; */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover; /* try contain */
+    
     width: 100%;
     height: 100%;
     margin: 0;
@@ -64,8 +74,7 @@ body {
     margin-top: 0px;
     margin-bottom: 0px;
     overflow: hidden; 
-    position: relative; 
-
+    /* position: relative;  */
   }
 
   #fractalCanvas {
