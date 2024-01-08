@@ -13,7 +13,7 @@ body {
 
   #bannerContainer {
     position: relative;
-    background-image: url('/resources/banner1.png');
+    background-image: url('resources/banner1.png');
     /* background-color: rgba(0, 0, 0, 0.2); */
     filter: brightness(80%);
     /* opacity: 0.5; */
@@ -76,7 +76,7 @@ body {
   #canvasContainer {
     /* background-color: #1f1f1f; */
     /* background-color: transparent;  */
-    background-image: url('/resources/kaonashi.gif');
+    background-image: url('resources/kaonashi.gif');
     /* background-image: none; */
     background-position: center;
     background-repeat: no-repeat;
