@@ -11,9 +11,11 @@ import { logDisplaySizes } from './debugTools.js';
 console.log(palettes);
 
 const pyramidContainer = document.getElementById('pyramidContainer');
-const canvas = document.getElementById('fractalCanvas');
+const canvasContainer = document.getElementById('canvasContainer');
+const canvas = document.getElementById('fractalCanvas'); //child of canvasContainer
 const ctx = canvas.getContext('2d');
 const infoBox = document.getElementById("infoBox");
+const kaoNashiPath = "url('/resources/kaonashi.gif')";
 
 let iterations = 11; // Number of iterations to display
 let lineWidth = .7;
@@ -122,12 +124,18 @@ function toggleInfoBox() {
   infoBox.innerHTML = logDisplaySizes().html;
 }
 
+function toggleKaoNashi() {
+  const currentBackground = canvasContainer.style.backgroundImage;
+  canvasContainer.style.backgroundImage = currentBackground === 'none' ? kaoNashiPath : 'none';
+}
+
 function handleKeyDown(event) {
   // Check if the pressed key is 'c'
   if (event.key === 'c') {
-    // Switch color palette and update canvas
     switchColorPalette();
     updateCanvasSize();
+  } else if (event.key === 'b') {
+    toggleKaoNashi();
   }
 }
 
