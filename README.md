@@ -37,4 +37,5 @@ You can view the project [here](https://spookyboogy.neocities.org/), on Neocitie
 ## Miscellaneous
 
 - Learn how to view/check neocities site visitors
+- The first click of pyramidContainer doesn't display the info box
 
