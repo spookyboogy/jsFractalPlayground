@@ -16,12 +16,12 @@ const canvas = document.getElementById('fractalCanvas'); //child of canvasContai
 const ctx = canvas.getContext('2d');
 const infoBox = document.getElementById("infoBox");
 const kaoNashiPath = "url('/resources/kaonashi.gif')";
+let opacityDirection = -1; // used for increasing/decreasing canvas opacity 
 
 let iterations = 11; // Number of iterations to display
-let lineWidth = .7;
-
-let paletteIndex = 0;
-let colorIndex = 0;
+let lineWidth = .7; // drawing width of fractal lines
+let paletteIndex = 0; // for tracking palette being used
+let colorIndex = 0; // for tracking current color of palette
 let strokeColors = palettes.palette1; // Assigning initial palette to strokeColors
 
 // impementing configs for when multiple modes are introduced
@@ -129,13 +129,29 @@ function toggleKaoNashi() {
   canvasContainer.style.backgroundImage = currentBackground === 'none' ? kaoNashiPath : 'none';
 }
 
+function adjustCanvasOpacity(increment = 0.01, minOpacity = 0.60, maxOpacity = 0.99) {
+  const currentOpacity = parseFloat(window.getComputedStyle(canvas).opacity);
+  if (currentOpacity <= minOpacity || currentOpacity >= maxOpacity) {
+    opacityDirection *= -1
+  } 
+  let newOpacity = currentOpacity + opacityDirection * increment;
+  // Ensure the opacity stays within range
+  newOpacity = Math.max(minOpacity, Math.min(newOpacity, maxOpacity));
+  // Set the new opacity value
+  canvas.style.opacity = newOpacity.toFixed(3);
+}
+
 function handleKeyDown(event) {
-  // Check if the pressed key is 'c'
   if (event.key === 'c') {
+    // Swap color palettes
     switchColorPalette();
     updateCanvasSize();
   } else if (event.key === 'b') {
+    // Toggle the kaonashi behind the canvas
     toggleKaoNashi();
+  } else if (event.key === 'o') {
+    // Adjust canvas opacity
+    adjustCanvasOpacity(0.01);
   }
 }
 
