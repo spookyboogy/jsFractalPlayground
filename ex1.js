@@ -206,7 +206,6 @@ function handleKeyDown(event) {
     }
 }
 
-
 function handleTouchStart(event) {
   touchStartX = event.touches[0].clientX;
 }
