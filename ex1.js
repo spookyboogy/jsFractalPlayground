@@ -144,43 +144,42 @@ function adjustCanvasOpacity(increment = 0.01, minOpacity = 0.50, maxOpacity = 1
 }
 let alphaDirection = 1
 function adjustBackgroundAlpha({ 
-  increment = 0.01, 
-  minAlpha = 0, 
-  maxAlpha = 1, 
-  init = false, 
-  defaultValue = 0.5,
-} = {}) {
-  let newAlpha
-  if (!init) {
-    const _currentAlpha = getComputedStyle(canvas).getPropertyValue("--alpha");
-    // // Get the current alpha value from the pseudo-element
-    const currentAlpha = parseFloat(_currentAlpha);
-    // Check if the adjustment direction needs to be flipped
-    if (currentAlpha <= minAlpha || currentAlpha >= maxAlpha) {
-      alphaDirection *= -1;
+    increment = 0.01, 
+    minAlpha = 0, 
+    maxAlpha = 1, 
+    init = false, 
+    defaultValue = 0.5,
+  } = {}) {
+    let newAlpha
+    if (!init) {
+      const _currentAlpha = getComputedStyle(canvas).getPropertyValue("--alpha");
+      // // Get the current alpha value from the pseudo-element
+      const currentAlpha = parseFloat(_currentAlpha);
+      // Check if the adjustment direction needs to be flipped
+      if (currentAlpha <= minAlpha || currentAlpha >= maxAlpha) {
+        alphaDirection *= -1;
+      }
+      // Calculate the new alpha value
+      newAlpha = currentAlpha + alphaDirection * increment;
+    } else {
+      // initializing, need to figure out why default css value doesn't load
+      newAlpha = defaultValue;
     }
-    // Calculate the new alpha value
-    newAlpha = currentAlpha + alphaDirection * increment;
-  } else {
-    // initializing, need to figure out why default css value doesn't load
-    newAlpha = defaultValue;
-  }
-  
-  // Ensure the alpha value stays within range
-  newAlpha = Math.max(minAlpha, Math.min(newAlpha, maxAlpha)).toFixed(3);
-  
-  // Set the new rgba alpha value using the CSS variable --alpha
-  canvas.style.setProperty('--alpha', newAlpha);
-  // idk why but both of these lines are required for it to work correctly
-  canvas.style.setProperty("background-color", `rgba(0, 0, 0, ${newAlpha})`);
+    
+    // Ensure the alpha value stays within range
+    newAlpha = Math.max(minAlpha, Math.min(newAlpha, maxAlpha)).toFixed(3);
+    // Set the new rgba alpha value using the CSS variable --alpha
+    canvas.style.setProperty('--alpha', newAlpha);
+    // idk why but both of these lines are required for it to work correctly
+    canvas.style.setProperty("background-color", `rgba(0, 0, 0, ${newAlpha})`);
 
-  console.log(`Canvas::after alpha : ${canvas.style.backgroundColor}`);
-  // Force a reflow to apply the style changes immediately
-  reflow(canvasContainer);
+    console.log(`Canvas::after alpha : ${canvas.style.backgroundColor}`);
+    // Force a reflow to apply the style changes immediately
+    reflow(canvasContainer);
 }
 
 function reflow(elt) {
-  elt.offsetHeight;
+    elt.offsetHeight;
 }
 
 function handleKeyDown(event) {
@@ -226,13 +225,13 @@ async function handleTouchMove(event) {
 }
 
 function initializeCanvas() {
-  // Initialize the canvas after updating sizes.
-  // Should consider separating canvas resizing from drawFractal calls
-  // , but works ok this way 
-  updateCanvasSize();
-  //Initialize (or set?) the rgba alpha of the curtain/shade 
-  // ::after canvas, before canvasContainer
-  adjustBackgroundAlpha({ init: true });
+    // Initialize the canvas after updating sizes.
+    // Should consider separating canvas resizing from drawFractal calls
+    // , but works ok this way 
+    updateCanvasSize();
+    //Initialize (or set?) the rgba alpha of the curtain/shade 
+    // ::after canvas, before canvasContainer
+    adjustBackgroundAlpha({ init: true });
 }
 
 
