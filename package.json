@@ -1,5 +1,16 @@
 {
+  "name": "jsFractalPlayground",
+  "version": "1.0.0",
+  "description": "learning javascript / webdev / ci/cd with fractals and whatnot",
+  "main": "ex1.js",
+  "scripts": {
+    "start": "node ex1.js"
+  },
+  "keywords": [],
+  "author": "spookyboogy",
+  "license": "MIT",
   "devDependencies": {
-    "eslint": "^8.56.0"
+    "eslint": "^7.0.0"
   }
 }
+

@@ -10,7 +10,7 @@ import palettes from './colorPalettes.js';
 import { logDisplaySizes } from './debugTools.js';
 console.log(palettes);
 
-const pyramidContainer = document.getElementById('pyramidContainer');
+// const pyramidContainer = document.getElementById('pyramidContainer');
 const canvasContainer = document.getElementById('canvasContainer');
 const canvas = document.getElementById('fractalCanvas'); //child of canvasContainer
 const ctx = canvas.getContext('2d');
