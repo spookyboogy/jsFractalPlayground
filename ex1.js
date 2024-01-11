@@ -17,6 +17,11 @@ const ctx = canvas.getContext('2d');
 const infoBox = document.getElementById("infoBox");
 const kaoNashiPath = "url('/resources/kaonashi.gif')";
 let opacityDirection = -1; // used for increasing/decreasing canvas opacity 
+let alphaDirection = 1 // used for increasing/decreasing canvas::after alpha
+let touchStartX = 0; // Initialize touch start variable for handling touch events 
+// hasSwiped variable for preventing multiple swipes from being read during one long swipe
+// might be better to have a listener/handler for 'touchend' instead
+let hasSwiped = false;
 
 let iterations = 11; // Number of iterations to display
 let lineWidth = .7; // drawing width of fractal lines
@@ -142,40 +147,42 @@ function adjustCanvasOpacity(increment = 0.01, minOpacity = 0.50, maxOpacity = 1
   // Set the new opacity value
   canvas.style.opacity = newOpacity.toFixed(4);
 }
-let alphaDirection = 1
-function adjustBackgroundAlpha({ 
-    increment = 0.01, 
-    minAlpha = 0, 
-    maxAlpha = 1, 
-    init = false, 
-    defaultValue = 0.5,
-  } = {}) {
-    let newAlpha
-    if (!init) {
-      const _currentAlpha = getComputedStyle(canvas).getPropertyValue("--alpha");
-      // // Get the current alpha value from the pseudo-element
-      const currentAlpha = parseFloat(_currentAlpha);
-      // Check if the adjustment direction needs to be flipped
-      if (currentAlpha <= minAlpha || currentAlpha >= maxAlpha) {
-        alphaDirection *= -1;
-      }
-      // Calculate the new alpha value
-      newAlpha = currentAlpha + alphaDirection * increment;
-    } else {
-      // initializing, need to figure out why default css value doesn't load
-      newAlpha = defaultValue;
-    }
-    
-    // Ensure the alpha value stays within range
-    newAlpha = Math.max(minAlpha, Math.min(newAlpha, maxAlpha)).toFixed(3);
-    // Set the new rgba alpha value using the CSS variable --alpha
-    canvas.style.setProperty('--alpha', newAlpha);
-    // idk why but both of these lines are required for it to work correctly
-    canvas.style.setProperty("background-color", `rgba(0, 0, 0, ${newAlpha})`);
 
-    console.log(`Canvas::after alpha : ${canvas.style.backgroundColor}`);
-    // Force a reflow to apply the style changes immediately
-    reflow(canvasContainer);
+
+function adjustBackgroundAlpha({ 
+  increment = 0.01, 
+  minAlpha = 0, 
+  maxAlpha = 1, 
+  init = false, 
+  defaultValue = 0.5,
+} = {}) {
+  let newAlpha;
+
+  if (!init) {
+    const _currentAlpha = getComputedStyle(canvas).getPropertyValue("--alpha");
+    // // Get the current alpha value from the pseudo-element
+    const currentAlpha = parseFloat(_currentAlpha);
+    // Check if the adjustment direction needs to be flipped
+    if (currentAlpha <= minAlpha || currentAlpha >= maxAlpha) {
+      alphaDirection *= -1;
+    }
+    // Calculate the new alpha value
+    newAlpha = currentAlpha + alphaDirection * increment;
+  } else {
+    // initializing, need to figure out why default css value doesn't auto-load
+    newAlpha = defaultValue;
+  }
+  
+  // Ensure the alpha value stays within range
+  newAlpha = Math.max(minAlpha, Math.min(newAlpha, maxAlpha)).toFixed(3);
+  // Set the new rgba alpha value using the CSS variable --alpha
+  canvas.style.setProperty('--alpha', newAlpha);
+  // idk why but both of these lines are required for it to work correctly
+  canvas.style.setProperty("background-color", `rgba(0, 0, 0, ${newAlpha})`);
+
+  console.log(`Canvas::after alpha : ${canvas.style.backgroundColor}`);
+  // Force a reflow to apply the style changes immediately
+  reflow(canvasContainer);
 }
 
 function reflow(elt) {
@@ -199,14 +206,11 @@ function handleKeyDown(event) {
     }
 }
 
-// Initialize touch start variable
-let touchStartX = 0;
-// hasSwiped variable to prevent multiple swipes from being read during one long swipe
-// might be better to have a listener/handler for 'touchend' instead
-let hasSwiped = false;
+
 function handleTouchStart(event) {
   touchStartX = event.touches[0].clientX;
 }
+
 async function handleTouchMove(event) {
   const touchEndX = event.touches[0].clientX;
   const deltaX = touchEndX - touchStartX;
@@ -233,7 +237,6 @@ function initializeCanvas() {
     // ::after canvas, before canvasContainer
     adjustBackgroundAlpha({ init: true });
 }
-
 
 
 // Add a click event listener to the subhead element to call the function
