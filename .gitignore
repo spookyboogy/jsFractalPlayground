@@ -8,6 +8,8 @@ _site
 .vscode
 node_modules/
 
+.eslintrc.js
+
 notes.txt
 notes.md
 secrets.txt
