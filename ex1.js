@@ -1,7 +1,7 @@
 // ex1.js
 /*
   Contains the logic for generating and drawing a Sierpinski triangle
-  and handling user interactions such as clicks and window resizes, among other things.
+  and handling user interactions such as clicks and window resizes, etc.
   
   lolearning javascript with fractals
 */
@@ -40,32 +40,31 @@ async function drawFractal(x, y, size, iterations, colorIndex) {
         ctx.lineTo(x + size, y);
         ctx.lineTo(x + size / 2, y + (Math.sqrt(3) * size) / 2);
         ctx.closePath();
-        ctx.strokeStyle = strokeColors[colorIndex % strokeColors.length]; 
+        ctx.strokeStyle = strokeColors[colorIndex % strokeColors.length];
         ctx.lineWidth = lineWidth;
         ctx.stroke();
   } else {
     // Recursive case: Generate three smaller triangles
-		await drawFractalStep(x, y, size, iterations, colorIndex);
-	}
+    await drawFractalStep(x, y, size, iterations, colorIndex);
+  }
 }
 
 async function drawFractalStep(x, y, size, iterations, colorIndex) {
 
-    await new Promise((resolve) => setTimeout(resolve, 0.000001)); // ms delay so that it animates drawing
-				
-        await drawFractal(x, y, size / 2, 
-                        iterations - 1, 
-                        colorIndex + 1); //
-        await drawFractal(x + size / 2, y, size / 2, 
-                        iterations - 1, 
-                        colorIndex + 2); // 
-        await drawFractal(x + size / 4, y + (Math.sqrt(3) * size) / 4, size / 2, 
-                        iterations - 1, 
-                        colorIndex + 3); // 
+    await new Promise((resolve) => setTimeout(resolve, 0.000001)); // ms delay for animation, janky
+    // await new Promise(requestAnimationFrame);
+        await drawFractal(x, y, size / 2,
+                        iterations - 1,
+                        colorIndex + 1); 
+        await drawFractal(x + size / 2, y, size / 2,
+                        iterations - 1,
+                        colorIndex + 2); 
+        await drawFractal(x + size / 4, y + (Math.sqrt(3) * size) / 4, size / 2,
+                        iterations - 1,
+                        colorIndex + 3); 
 }
 
 async function updateCanvasSize() {
-    
     const containerWidth = canvas.parentNode.clientWidth;
     const containerHeight = canvas.parentNode.clientHeight;
     // getting dimensions from canvas.parentNode is much more crisp than from window.inner*
@@ -74,39 +73,40 @@ async function updateCanvasSize() {
     // Set the CSS size of the canvas to match the size of the container (this breaks things currently)
     // canvas.style.width = `${canvasSize}px`;
     // canvas.style.height = `${canvasSize}px`;
-    
+
     // Adjust the canvas drawing buffer size to match the display size
     canvas.width = canvasSize;
     canvas.height = canvasSize;
 
     // Update infobox and log info to console
-    infoBox.innerHTML = logDisplaySizes().html; 
-    
+    infoBox.innerHTML = logDisplaySizes().html;
+
     // const dpr = window.devicePixelRatio || 1;
     // canvas.width = canvasSize * dpr;
     // canvas.height = canvasSize * dpr;
     // ctx.scale(dpr, dpr);
-    
+
     const triangleHeight = (Math.sqrt(3) * canvasSize) / 2;
     const startX = canvas.width / 2 - canvasSize / 2;
     const startY = canvas.height / 2 - triangleHeight / 2;
 
+    // Should consider separating canvas resizing from drawFractal calls, but works ok this way
     await drawFractalRange(startX, startY, canvasSize, 1, iterations, colorIndex);
     // draw a single fractal at given iteration level
     // await drawFractal(startX, startY, canvasSize, iterations, colorIndex);  
 }
 
 async function drawFractalRange(x, y, size, startIterations, endIterations, colorIndex) {
-  for (let iterations = startIterations; iterations <= endIterations; iterations++) {
-      await drawFractal(x, y, size, iterations, colorIndex);
-      // introduce a delay between iterations for visualization purposes
-      await new Promise(resolve => setTimeout(resolve, 100)); // milliseconds
-      // set the wait time as a function of the iteration level such that
-      // low level iterations have a bigger pause, so that it looks less hurried at the start
+    for (let iterations = startIterations; iterations <= endIterations; iterations++) {
+        await drawFractal(x, y, size, iterations, colorIndex);
+        // introduce a delay between iterations for visualization purposes
+        await new Promise(resolve => setTimeout(resolve, 100)); // milliseconds
+        // set the wait time as a function of the iteration level such that
+        // low level iterations have a bigger pause, so that it looks less hurried at the start
   }
 }
 
-function switchColorPalette(event){
+function switchColorPalette(event) {
   paletteIndex = (paletteIndex + 1) % Object.keys(palettes).length;
   // testing
   // let _strokeColors = palettes[Object.keys(palettes)[paletteIndex]]
@@ -129,37 +129,82 @@ function toggleKaoNashi() {
   canvasContainer.style.backgroundImage = currentBackground === 'none' ? kaoNashiPath : 'none';
 }
 
-function adjustCanvasOpacity(increment = 0.01, minOpacity = 0.60, maxOpacity = 0.99) {
+function adjustCanvasOpacity(increment = 0.01, minOpacity = 0.50, maxOpacity = 1) {
   const currentOpacity = parseFloat(window.getComputedStyle(canvas).opacity);
   if (currentOpacity <= minOpacity || currentOpacity >= maxOpacity) {
     opacityDirection *= -1
-  } 
+  }
+  // Calculate new opacity and make sure it stays in range
   let newOpacity = currentOpacity + opacityDirection * increment;
-  // Ensure the opacity stays within range
   newOpacity = Math.max(minOpacity, Math.min(newOpacity, maxOpacity));
+  // // Debugging information
+  console.log(`Canvas opacity : ${newOpacity}`)
   // Set the new opacity value
-  canvas.style.opacity = newOpacity.toFixed(3);
+  canvas.style.opacity = newOpacity.toFixed(4);
+}
+let alphaDirection = 1
+function adjustBackgroundAlpha({ 
+  increment = 0.01, 
+  minAlpha = 0, 
+  maxAlpha = 1, 
+  init = false, 
+  defaultValue = 0.5,
+} = {}) {
+  let newAlpha
+  if (!init) {
+    const _currentAlpha = getComputedStyle(canvas).getPropertyValue("--alpha");
+    // // Get the current alpha value from the pseudo-element
+    const currentAlpha = parseFloat(_currentAlpha);
+    // Check if the adjustment direction needs to be flipped
+    if (currentAlpha <= minAlpha || currentAlpha >= maxAlpha) {
+      alphaDirection *= -1;
+    }
+    // Calculate the new alpha value
+    newAlpha = currentAlpha + alphaDirection * increment;
+  } else {
+    // initializing, need to figure out why default css value doesn't load
+    newAlpha = defaultValue;
+  }
+  
+  // Ensure the alpha value stays within range
+  newAlpha = Math.max(minAlpha, Math.min(newAlpha, maxAlpha)).toFixed(3);
+  
+  // Set the new rgba alpha value using the CSS variable --alpha
+  canvas.style.setProperty('--alpha', newAlpha);
+  // idk why but both of these lines are required for it to work correctly
+  canvas.style.setProperty("background-color", `rgba(0, 0, 0, ${newAlpha})`);
+
+  console.log(`Canvas::after alpha : ${canvas.style.backgroundColor}`);
+  // Force a reflow to apply the style changes immediately
+  reflow(canvasContainer);
+}
+
+function reflow(elt) {
+  elt.offsetHeight;
 }
 
 function handleKeyDown(event) {
-  if (event.key === 'c') {
-    // Swap color palettes
-    switchColorPalette();
-    updateCanvasSize();
-  } else if (event.key === 'b') {
-    // Toggle the kaonashi behind the canvas
-    toggleKaoNashi();
-  } else if (event.key === 'o') {
-    // Adjust canvas opacity
-    adjustCanvasOpacity(0.01);
-  }
+    if (event.key === 'c') {
+      // Swap color palettes
+      switchColorPalette();
+      updateCanvasSize();
+    } else if (event.key === 'b') {
+      // Toggle the kaonashi behind the canvas
+      toggleKaoNashi();
+    } else if (event.key === 'o') {
+      // Adjust canvas opacity
+      adjustCanvasOpacity(0.01);
+    } else if (event.key === 'i') {
+      // Adjust alpha of rgba of the shade/curtain between canvas and kaonashi background
+      adjustBackgroundAlpha({ increment: 0.05 });
+    }
 }
 
 // Initialize touch start variable
 let touchStartX = 0;
 // hasSwiped variable to prevent multiple swipes from being read during one long swipe
 // might be better to have a listener/handler for 'touchend' instead
-let hasSwiped = false; 
+let hasSwiped = false;
 function handleTouchStart(event) {
   touchStartX = event.touches[0].clientX;
 }
@@ -180,10 +225,22 @@ async function handleTouchMove(event) {
   }
 }
 
+function initializeCanvas() {
+  // Initialize the canvas after updating sizes.
+  // Should consider separating canvas resizing from drawFractal calls
+  // , but works ok this way 
+  updateCanvasSize();
+  //Initialize (or set?) the rgba alpha of the curtain/shade 
+  // ::after canvas, before canvasContainer
+  adjustBackgroundAlpha({ init: true });
+}
+
+
+
 // Add a click event listener to the subhead element to call the function
 document.getElementById("pyramidContainer").addEventListener("click", toggleInfoBox);
 // Recenter and update canvas on window resize
-window.addEventListener('resize', updateCanvasSize); 
+window.addEventListener('resize', updateCanvasSize);
 // Add keydown listener for implementing keybindings
 document.addEventListener('keydown', handleKeyDown);
 // Add click event listener to the canvas
@@ -192,4 +249,7 @@ canvas.addEventListener('click', updateCanvasSize);
 canvas.addEventListener('touchstart', handleTouchStart);
 canvas.addEventListener('touchmove', handleTouchMove);
 
-updateCanvasSize(); // Initialize canvas
+initializeCanvas();
+
+
+
