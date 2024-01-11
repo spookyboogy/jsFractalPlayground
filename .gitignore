@@ -6,6 +6,7 @@
 
 _site
 .vscode
+node_modules/
 
 notes.txt
 notes.md
