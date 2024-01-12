@@ -1,5 +1,5 @@
 {
-  "name": "jsFractalPlayground",
+  "name": "fractalplayground",
   "version": "1.0.0",
   "description": "learning javascript / webdev / ci/cd with fractals and whatnot",
   "main": "ex1.js",
