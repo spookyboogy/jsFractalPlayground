@@ -21,7 +21,7 @@ let alphaDirection = 1 // used for increasing/decreasing canvas::after alpha
 let touchStartX = 0; // Initialize touch start variable for handling touch events 
 // might be better to have a listener/handler for 'touchend' instead of using hasSwiped
 let hasSwiped = false; // for preventing multiple swipes from being read during one long swipe
-let dynamicLineWidthMode = false; // janky(?) way of implementing new drawing mode
+let dynamicLineWidthMode = true; // janky(?) way of implementing new drawing mode
 
 let maxIterations = 11; // Number of iterations to display
 let lineWidth = .7; // drawing width of fractal lines
@@ -51,6 +51,7 @@ async function drawFractal(x, y, size, iterations, colorIndex) {
     drawTriangle(x, y, size);
 
     if (dynamicLineWidthMode) {
+      // const dynamicLineWidth = minWidth + (maxIterations - iterations) / maxIterations * (maxWidth - minWidth);
       const dynamicLineWidth = 0.2 + (maxIterations - iterations) / maxIterations * 0.5;
       ctx.lineWidth = dynamicLineWidth;
     } else {
@@ -68,7 +69,7 @@ async function drawFractal(x, y, size, iterations, colorIndex) {
 async function drawFractalStep(x, y, size, iterations, colorIndex) {
 
     await new Promise((resolve) => setTimeout(resolve, 0.000001)); // ms delay for animation, janky
-    // await new Promise(requestAnimationFrame);
+    // await new Promise(requestAnimationFrame); //better way of doing it, probably (feels slower)
         await drawFractal(x, y, size / 2,
                         iterations - 1,
                         colorIndex + 1); 
@@ -123,7 +124,7 @@ async function drawFractalRange(x, y, size, startIterations, endIterations, colo
 }
 
 function switchColorPalette(increment = true) {
-  
+
   const lenPalettes = Object.keys(palettes).length
   paletteIndex = (paletteIndex + (increment ? 1 : -1) + lenPalettes) % lenPalettes;
   strokeColors = palettes[Object.keys(palettes)[paletteIndex]]
