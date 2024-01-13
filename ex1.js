@@ -19,11 +19,11 @@ const kaoNashiPath = "url('/resources/kaonashi.gif')";
 let opacityDirection = -1; // used for increasing/decreasing canvas opacity 
 let alphaDirection = 1 // used for increasing/decreasing canvas::after alpha
 let touchStartX = 0; // Initialize touch start variable for handling touch events 
-// hasSwiped variable for preventing multiple swipes from being read during one long swipe
-// might be better to have a listener/handler for 'touchend' instead
-let hasSwiped = false;
+// might be better to have a listener/handler for 'touchend' instead of using hasSwiped
+let hasSwiped = false; // for preventing multiple swipes from being read during one long swipe
+let dynamicLineWidthMode = false; // janky(?) way of implementing new drawing mode
 
-let iterations = 11; // Number of iterations to display
+let maxIterations = 11; // Number of iterations to display
 let lineWidth = .7; // drawing width of fractal lines
 let paletteIndex = 0; // for tracking palette being used
 let colorIndex = 0; // for tracking current color of palette
@@ -37,17 +37,28 @@ let strokeColors = palettes.palette1; // Assigning initial palette to strokeColo
 //   strokeColors : palettes.palette1,
 // };
 
+function drawTriangle(x, y, size) {
+  ctx.beginPath();
+  ctx.moveTo(x, y);
+  ctx.lineTo(x + size, y);
+  ctx.lineTo(x + size / 2, y + (Math.sqrt(3) * size) / 2);
+  ctx.closePath();
+}
+
 async function drawFractal(x, y, size, iterations, colorIndex) {
-    if (iterations === 0) {
-    // Base case: Stop recursion when iterations reach 0
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(x + size, y);
-        ctx.lineTo(x + size / 2, y + (Math.sqrt(3) * size) / 2);
-        ctx.closePath();
-        ctx.strokeStyle = strokeColors[colorIndex % strokeColors.length];
-        ctx.lineWidth = lineWidth;
-        ctx.stroke();
+  if (iterations === 0) {
+  // Base case: Stop recursion when iterations reach 0
+    drawTriangle(x, y, size);
+
+    if (dynamicLineWidthMode) {
+      const dynamicLineWidth = 0.2 + (maxIterations - iterations) / maxIterations * 0.5;
+      ctx.lineWidth = dynamicLineWidth;
+    } else {
+      ctx.lineWidth = lineWidth; // Use constant line width
+    }
+
+    ctx.strokeStyle = strokeColors[colorIndex % strokeColors.length];
+    ctx.stroke();
   } else {
     // Recursive case: Generate three smaller triangles
     await drawFractalStep(x, y, size, iterations, colorIndex);
@@ -96,7 +107,7 @@ async function updateCanvasSize() {
     const startY = canvas.height / 2 - triangleHeight / 2;
 
     // Should consider separating canvas resizing from drawFractal calls, but works ok this way
-    await drawFractalRange(startX, startY, canvasSize, 1, iterations, colorIndex);
+    await drawFractalRange(startX, startY, canvasSize, 1, maxIterations, colorIndex);
     // draw a single fractal at given iteration level
     // await drawFractal(startX, startY, canvasSize, iterations, colorIndex);  
 }
@@ -112,10 +123,11 @@ async function drawFractalRange(x, y, size, startIterations, endIterations, colo
 }
 
 function switchColorPalette(increment = true) {
-  paletteIndex = (paletteIndex + (increment ? 1 : -1) + Object.keys(palettes).length) % Object.keys(palettes).length;
-  // let _strokeColors = palettes[Object.keys(palettes)[paletteIndex]]
-  // console.log(`new palette : ${_strokeColors}`)
+  
+  const lenPalettes = Object.keys(palettes).length
+  paletteIndex = (paletteIndex + (increment ? 1 : -1) + lenPalettes) % lenPalettes;
   strokeColors = palettes[Object.keys(palettes)[paletteIndex]]
+
   console.log(`palette index : ${paletteIndex}`)
   console.log(`current palette : \n${strokeColors}`);
 }
@@ -147,13 +159,8 @@ function adjustCanvasOpacity(increment = 0.01, minOpacity = 0.50, maxOpacity = 1
   canvas.style.opacity = newOpacity.toFixed(4);
 }
 
-function adjustBackgroundAlpha({ 
-  increment = 0.01, 
-  minAlpha = 0, 
-  maxAlpha = 1, 
-  init = false, 
-  defaultValue = 0.5,
-} = {}) {
+function adjustBackgroundAlpha({ increment = 0.01, minAlpha = 0, maxAlpha = 1, 
+                                  init = false, defaultValue = 0.5,} = {}) {
   let newAlpha;
 
   if (!init) {
@@ -187,6 +194,12 @@ function reflow(elt) {
     elt.offsetHeight;
 }
 
+function toggleDrawingMode() {
+  dynamicLineWidthMode = !dynamicLineWidthMode;
+  console.log(`\nDrawing mode switched to ${dynamicLineWidthMode ? 'Dynamic Line Width' : 'Constant Line Width'}\n`);
+  updateCanvasSize();
+}
+
 function handleKeyDown(event) {
 
     if (event.key === 'c') {
@@ -202,7 +215,9 @@ function handleKeyDown(event) {
     } else if (event.key === 'i') {
       // Adjust alpha of rgba of the shade/curtain between canvas and kaonashi background
       adjustBackgroundAlpha({ increment: 0.05 });
-    }
+    } else if (event.key === 'm') {
+      toggleDrawingMode();
+    } 
 }
 
 function handleTouchStart(event) {
@@ -242,7 +257,6 @@ function initializeCanvas() {
     // ::after canvas, before canvasContainer
     adjustBackgroundAlpha({ init : true });
 }
-
 
 // Add a click event listener to the subhead element to call the function
 document.getElementById("pyramidContainer").addEventListener("click", toggleInfoBox);
