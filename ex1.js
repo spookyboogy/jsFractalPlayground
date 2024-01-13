@@ -30,11 +30,11 @@ let colorIndex = 0; // for tracking current color of palette
 let strokeColors = palettes.palette1; // Assigning initial palette to strokeColors
 
 // impementing configs for when multiple modes are introduced
-// let config = {
-//   iterations : 7, 
-//   lineWidth : 0.7, 
+// let defaultConfig = {
+//   iterations : 11, 
+//   lineWidth : 0.7,
+//   colorIndex : 0,
 //   strokeColors : palettes.palette1,
-//   // ...
 // };
 
 async function drawFractal(x, y, size, iterations, colorIndex) {
@@ -111,9 +111,8 @@ async function drawFractalRange(x, y, size, startIterations, endIterations, colo
   }
 }
 
-function switchColorPalette(event) {
-  paletteIndex = (paletteIndex + 1) % Object.keys(palettes).length;
-  // testing
+function switchColorPalette(increment = true) {
+  paletteIndex = (paletteIndex + (increment ? 1 : -1) + Object.keys(palettes).length) % Object.keys(palettes).length;
   // let _strokeColors = palettes[Object.keys(palettes)[paletteIndex]]
   // console.log(`new palette : ${_strokeColors}`)
   strokeColors = palettes[Object.keys(palettes)[paletteIndex]]
@@ -147,7 +146,6 @@ function adjustCanvasOpacity(increment = 0.01, minOpacity = 0.50, maxOpacity = 1
   // Set the new opacity value
   canvas.style.opacity = newOpacity.toFixed(4);
 }
-
 
 function adjustBackgroundAlpha({ 
   increment = 0.01, 
@@ -190,6 +188,7 @@ function reflow(elt) {
 }
 
 function handleKeyDown(event) {
+
     if (event.key === 'c') {
       // Swap color palettes
       switchColorPalette();
@@ -215,15 +214,22 @@ async function handleTouchMove(event) {
   const deltaX = touchEndX - touchStartX;
   // Threshold for considering the swipe as intentional
   const minSwipeDistance = 50;
-  if (deltaX > minSwipeDistance || deltaX < -minSwipeDistance) {
-    // add palette deincrement case for when left swiping eventually
+  if (deltaX > minSwipeDistance) {
+    // Right swipe 
     if (!hasSwiped) {
       hasSwiped = true;
-      switchColorPalette();
-      await updateCanvasSize();  // Wait for canvas update to complete
+      switchColorPalette(true);
+      await updateCanvasSize();  // Update the Canvas
+    }
+  } else if (deltaX < -minSwipeDistance) {
+    // Left swipe
+    if (!hasSwiped) {
+      hasSwiped = true;  // Reset the flag if the swipe distance is less than the threshold
+      switchColorPalette(false); // false flag decrements paletteIndex
+      await updateCanvasSize();  // Update the Canvas
     }
   } else {
-    hasSwiped = false;  // Reset the flag if the swipe distance is less than the threshold
+    hasSwiped = false
   }
 }
 
@@ -234,7 +240,7 @@ function initializeCanvas() {
     updateCanvasSize();
     //Initialize (or set?) the rgba alpha of the curtain/shade 
     // ::after canvas, before canvasContainer
-    adjustBackgroundAlpha({ init: true });
+    adjustBackgroundAlpha({ init : true });
 }
 
 
