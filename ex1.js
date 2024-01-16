@@ -23,8 +23,11 @@ let touchStartX = 0; // Initialize touch start variable for handling touch event
 let hasSwiped = false; // for preventing multiple swipes from being read during one long swipe
 let dynamicLineWidthMode = true; // janky(?) way of implementing new drawing mode
 
-let maxIterations = 11; // Number of iterations to display
-let lineWidth = .7; // drawing width of fractal lines
+let minIterations = 1; // Min fractal iteration depth, used in drawFractalRange
+let maxIterations = 9; // Max fractal iteration depth, used in drawFractalRange
+let defaultLineWidth = .7; // drawing width of fractal lines
+let defaultMinLineWidth = 0.45; // Used as min width when in dynamicLineWidthMode
+let defaultMaxLineWidth = 1.5; // Used as max width when in dynamicLineWidthMode
 let paletteIndex = 0; // for tracking palette being used
 let colorIndex = 0; // for tracking current color of palette
 let strokeColors = palettes.palette1; // Assigning initial palette to strokeColors
@@ -37,6 +40,22 @@ let strokeColors = palettes.palette1; // Assigning initial palette to strokeColo
 //   strokeColors : palettes.palette1,
 // };
 
+function getLineWidth(iterations, minWidth = defaultMinLineWidth, maxWidth = defaultMaxLineWidth) {
+  if (dynamicLineWidthMode) {
+    const dynamicLineWidth =
+      minWidth +
+      (maxIterations - iterations) / maxIterations * (maxWidth - minWidth);
+      
+      console.log(`\n\n\niterations: ${iterations}`);
+      console.log(`dynamicLineWidth: ${dynamicLineWidth}`);
+
+      return dynamicLineWidth;
+    } else {
+      console.log(`Constant Line Width: ${defaultLineWidth}`);
+      return defaultLineWidth; // Use constant line width
+    }
+}
+
 function drawTriangle(x, y, size) {
   ctx.beginPath();
   ctx.moveTo(x, y);
@@ -45,40 +64,29 @@ function drawTriangle(x, y, size) {
   ctx.closePath();
 }
 
-async function drawFractal(x, y, size, iterations, colorIndex) {
+async function drawFractal(x, y, size, iterations, colorIndex, lineWidth = defaultLineWidth) {
   if (iterations === 0) {
   // Base case: Stop recursion when iterations reach 0
-    drawTriangle(x, y, size);
-
-    if (dynamicLineWidthMode) {
-      // const dynamicLineWidth = minWidth + (maxIterations - iterations) / maxIterations * (maxWidth - minWidth);
-      const dynamicLineWidth = 0.2 + (maxIterations - iterations) / maxIterations * 0.5;
-      ctx.lineWidth = dynamicLineWidth;
-    } else {
-      ctx.lineWidth = lineWidth; // Use constant line width
-    }
-
+    // console.log(`\nin drawFractal\n\tctx.lineWidth = ${ctx.lineWidth}`);
+    // ctx.lineWidth = getLineWidth(iterations);
+    ctx.lineWidth = lineWidth;
     ctx.strokeStyle = strokeColors[colorIndex % strokeColors.length];
-    ctx.stroke();
+    drawTriangle(x, y, size);
+    await ctx.stroke();
   } else {
     // Recursive case: Generate three smaller triangles
-    await drawFractalStep(x, y, size, iterations, colorIndex);
+    await drawFractalStep(x, y, size, iterations, colorIndex, lineWidth);
   }
 }
 
-async function drawFractalStep(x, y, size, iterations, colorIndex) {
+async function drawFractalStep(x, y, size, iterations, colorIndex, lineWidth = defaultLineWidth) {
 
+    // const newLineWidth = getLineWidth(iterations - 1);
     await new Promise((resolve) => setTimeout(resolve, 0.000001)); // ms delay for animation, janky
     // await new Promise(requestAnimationFrame); //better way of doing it, probably (feels slower)
-        await drawFractal(x, y, size / 2,
-                        iterations - 1,
-                        colorIndex + 1); 
-        await drawFractal(x + size / 2, y, size / 2,
-                        iterations - 1,
-                        colorIndex + 2); 
-        await drawFractal(x + size / 4, y + (Math.sqrt(3) * size) / 4, size / 2,
-                        iterations - 1,
-                        colorIndex + 3); 
+        await drawFractal(x, y, size / 2, iterations - 1, colorIndex + 1, lineWidth); 
+        await drawFractal(x + size / 2, y, size / 2, iterations - 1, colorIndex + 2, lineWidth); 
+        await drawFractal(x + size / 4, y + (Math.sqrt(3) * size) / 4, size / 2, iterations - 1, colorIndex + 3, lineWidth); 
 }
 
 async function updateCanvasSize() {
@@ -108,14 +116,16 @@ async function updateCanvasSize() {
     const startY = canvas.height / 2 - triangleHeight / 2;
 
     // Should consider separating canvas resizing from drawFractal calls, but works ok this way
-    await drawFractalRange(startX, startY, canvasSize, 1, maxIterations, colorIndex);
+    await drawFractalRange(startX, startY, canvasSize, minIterations, maxIterations, colorIndex);
+
     // draw a single fractal at given iteration level
     // await drawFractal(startX, startY, canvasSize, iterations, colorIndex);  
 }
 
 async function drawFractalRange(x, y, size, startIterations, endIterations, colorIndex) {
     for (let iterations = startIterations; iterations <= endIterations; iterations++) {
-        await drawFractal(x, y, size, iterations, colorIndex);
+        const lineWidth = getLineWidth(iterations);
+        await drawFractal(x, y, size, iterations, colorIndex, lineWidth);
         // introduce a delay between iterations for visualization purposes
         await new Promise(resolve => setTimeout(resolve, 100)); // milliseconds
         // set the wait time as a function of the iteration level such that
