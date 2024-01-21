@@ -26,8 +26,10 @@ let dynamicLineWidthMode = true; // janky(?) way of implementing new drawing mod
 let minIterations = 1; // Min fractal iteration depth, used in drawFractalRange
 let maxIterations = 9; // Max fractal iteration depth, used in drawFractalRange
 let defaultLineWidth = .7; // drawing width of fractal lines
-let defaultMinLineWidth = 0.45; // Used as min width when in dynamicLineWidthMode
-let defaultMaxLineWidth = 1.5; // Used as max width when in dynamicLineWidthMode
+let defaultMinLineWidth = 0.35; // Used as min width when in dynamicLineWidthMode
+let defaultMaxLineWidth = 1.6; // Used as max width when in dynamicLineWidthMode
+// let defaultMinLineWidth = 0.4; // Used as min width when in dynamicLineWidthMode
+// let defaultMaxLineWidth = 1.7; // Used as max width when in dynamicLineWidthMode
 let paletteIndex = 0; // for tracking palette being used
 let colorIndex = 0; // for tracking current color of palette
 let strokeColors = palettes.palette1; // Assigning initial palette to strokeColors
@@ -56,7 +58,7 @@ function getLineWidth(iterations, minWidth = defaultMinLineWidth, maxWidth = def
     }
 }
 
-function drawTriangle(x, y, size) {
+async function drawTriangle(x, y, size) {
   ctx.beginPath();
   ctx.moveTo(x, y);
   ctx.lineTo(x + size, y);
@@ -71,8 +73,8 @@ async function drawFractal(x, y, size, iterations, colorIndex, lineWidth = defau
     // ctx.lineWidth = getLineWidth(iterations);
     ctx.lineWidth = lineWidth;
     ctx.strokeStyle = strokeColors[colorIndex % strokeColors.length];
-    drawTriangle(x, y, size);
-    await ctx.stroke();
+    await drawTriangle(x, y, size);
+    ctx.stroke();
   } else {
     // Recursive case: Generate three smaller triangles
     await drawFractalStep(x, y, size, iterations, colorIndex, lineWidth);
@@ -82,8 +84,8 @@ async function drawFractal(x, y, size, iterations, colorIndex, lineWidth = defau
 async function drawFractalStep(x, y, size, iterations, colorIndex, lineWidth = defaultLineWidth) {
 
     // const newLineWidth = getLineWidth(iterations - 1);
-    await new Promise((resolve) => setTimeout(resolve, 0.000001)); // ms delay for animation, janky
-    // await new Promise(requestAnimationFrame); //better way of doing it, probably (feels slower)
+    // await new Promise((resolve) => setTimeout(resolve, 0.000001)); // ms delay for animation, janky
+    await new Promise(requestAnimationFrame); //better way of doing it, probably (feels slower)
         await drawFractal(x, y, size / 2, iterations - 1, colorIndex + 1, lineWidth); 
         await drawFractal(x + size / 2, y, size / 2, iterations - 1, colorIndex + 2, lineWidth); 
         await drawFractal(x + size / 4, y + (Math.sqrt(3) * size) / 4, size / 2, iterations - 1, colorIndex + 3, lineWidth); 
@@ -127,7 +129,7 @@ async function drawFractalRange(x, y, size, startIterations, endIterations, colo
         const lineWidth = getLineWidth(iterations);
         await drawFractal(x, y, size, iterations, colorIndex, lineWidth);
         // introduce a delay between iterations for visualization purposes
-        await new Promise(resolve => setTimeout(resolve, 100)); // milliseconds
+        await new Promise(resolve => setTimeout(resolve, 50)); // milliseconds
         // set the wait time as a function of the iteration level such that
         // low level iterations have a bigger pause, so that it looks less hurried at the start
   }
